@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title id="pageTitle">Awadh Fine Dine Restaurant (अवध) | Rate Us on Google & Follow Us on Instagram</title>
+    <title id="pageTitle">Awadh Fine Dine Restaurant | Rate Us on Google & Follow Us on Instagram</title>
     
     <!-- Meta Tags for SEO & WhatsApp/Social Sharing -->
     <meta name="description" id="metaDesc" content="Welcome to Awadh Fine Dine Restaurant (अवध) — 100% Pure Veg Royal Family Dining, NH 3, Agra-Mumbai Highway, Pigdamber, Rau, Indore. Rate Us on Google & Follow Us on Instagram (@awadh_restaurant__).">
@@ -743,7 +743,7 @@
             <div class="outlets-list">
                 <div class="outlet-item">
                     <span class="outlet-badge">✦ 100% PURE VEG • FINE DINE RESTAURANT ✦</span>
-                    <div class="address-line" id="uiHighlight">Royal Awadhi, North Indian & Global Family Dining</div>
+                    <div class="address-line" id="uiHighlight">100% Pure Vegetarian • Royal Awadhi & North Indian Delicacies • Grand Ambience</div>
                 </div>
                 <div class="outlet-item">
                     <span class="outlet-badge">✦ RAU, AB ROAD • INDORE ✦</span>
@@ -772,7 +772,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=1"></script>
+    <script src="config.js?v=f268d9a4"></script>
     <script>
         function openLightbox(src) {
             const modal = document.getElementById('lightboxModal');
@@ -787,8 +787,7 @@
             if (modal) modal.classList.remove('open');
         }
 
-        (function () {
-            const cfg = window.RESTAURANT_CONFIG;
+        function applyRestaurantConfig(cfg) {
             if (!cfg) return;
 
             if (cfg.name) {
@@ -801,6 +800,10 @@
             if (cfg.tagline) {
                 const tagEl = document.getElementById('uiTagline');
                 if (tagEl) tagEl.textContent = cfg.tagline;
+            }
+            if (cfg.highlight) {
+                const hlEl = document.getElementById('uiHighlight');
+                if (hlEl) hlEl.textContent = cfg.highlight;
             }
             if (cfg.addressPrimary) {
                 const addr1 = document.getElementById('uiAddressPrimary');
@@ -845,7 +848,24 @@
                 window.location.replace(cfg.instagramUrl);
                 return;
             }
-        })();
+        }
+
+        // 1. Apply immediately from loaded config.js
+        applyRestaurantConfig(window.RESTAURANT_CONFIG);
+
+        // 2. Also fetch fresh uncached config.js?_t=<timestamp> to bypass browser & CDN cache on live GitHub Pages
+        if (window.location.protocol !== 'file:') {
+            fetch('config.js?_t=' + Date.now(), { cache: 'no-store' })
+                .then(function (res) { return res.ok ? res.text() : null; })
+                .then(function (code) {
+                    if (!code) return;
+                    try {
+                        new Function(code)();
+                        applyRestaurantConfig(window.RESTAURANT_CONFIG);
+                    } catch (e) {}
+                })
+                .catch(function () {});
+        }
     </script>
 </body>
 </html>

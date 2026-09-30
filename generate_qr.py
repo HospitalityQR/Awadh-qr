@@ -647,15 +647,31 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
         hy = 198
         canvas.paste(title_img, (hx, hy), mask=title_img)
 
-    font_midway = get_font(27, bold=True)
     raw_sub = config.get("subname", "AWADH FINE DINE RESTAURANT").strip().upper()
     midway_text = "   ".join([" ".join(list(word)) for word in raw_sub.split()])
+    font_size_sub = 27
+    font_midway = get_font(font_size_sub, bold=True)
     bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
+    if (bbox[2] - bbox[0]) > (w - 140):
+        midway_text = "  ".join([" ".join(list(word)) for word in raw_sub.split()])
+        bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
+    while (bbox[2] - bbox[0]) > (w - 140) and font_size_sub > 18:
+        font_size_sub -= 1
+        font_midway = get_font(font_size_sub, bold=True)
+        bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
+    if (bbox[2] - bbox[0]) > (w - 140):
+        midway_text = raw_sub
+        bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, 354), midway_text, fill=(247, 223, 148), font=font_midway)
 
-    font_sub = get_font(18, bold=True)
     sub_text = config.get("tagline", "100% PURE VEG  •  ROYAL FAMILY DINING  •  RAU, INDORE")
+    font_size_tag = 18
+    font_sub = get_font(font_size_tag, bold=True)
     bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
+    while (bbox[2] - bbox[0]) > (w - 140) and font_size_tag > 13:
+        font_size_tag -= 1
+        font_sub = get_font(font_size_tag, bold=True)
+        bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, 396), sub_text, fill=(255, 255, 255), font=font_sub)
 
     div_y = 438
@@ -667,8 +683,6 @@ def draw_footer(canvas, draw, config, w=1200):
     """
     Draw the Ultra-Luxury Address & Phone Box + Gold Sparkle Thank-You Footer.
     """
-    font_label = get_font(21, bold=True)
-    font_addr = get_font(21, bold=True)
     font_phone = get_font(33, bold=True)
     font_thanks = get_font(28, bold=False, italic=True, serif=True)
 
@@ -706,33 +720,47 @@ def draw_footer(canvas, draw, config, w=1200):
 
     lbl1 = "100% PURE VEG :  "
     txt1 = config.get("highlight", "Royal Awadhi, North Indian & Global Fine Dining")
-    if len(txt1) > 54:
-        txt1 = "Royal Awadhi, North Indian & Global Fine Dining"
-    b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label)
-    b_txt1 = draw.textbbox((0, 0), txt1, font=font_addr)
+    f_size1 = 21
+    font_label1 = get_font(f_size1, bold=True)
+    font_addr1 = get_font(f_size1, bold=True)
+    b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label1)
+    b_txt1 = draw.textbbox((0, 0), txt1, font=font_addr1)
+    while ((b_lbl1[2] - b_lbl1[0]) + (b_txt1[2] - b_txt1[0])) > (w - 230) and f_size1 > 14:
+        f_size1 -= 1
+        font_label1 = get_font(f_size1, bold=True)
+        font_addr1 = get_font(f_size1, bold=True)
+        b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label1)
+        b_txt1 = draw.textbbox((0, 0), txt1, font=font_addr1)
     w1_lbl = b_lbl1[2] - b_lbl1[0]
     w1_txt = b_txt1[2] - b_txt1[0]
     total_w1 = w1_lbl + w1_txt
     x1_start = (w - total_w1) / 2
-    y1_row = info_y1 + 19
-    draw_sparkle(draw, x1_start - 20, y1_row + 12, radius=7, color=(249, 226, 156))
-    draw.text((x1_start, y1_row), lbl1, fill=(249, 226, 156), font=font_label)
-    draw.text((x1_start + w1_lbl, y1_row), txt1, fill=(255, 255, 255), font=font_addr)
+    y1_row = info_y1 + 19 + (21 - f_size1) // 2
+    draw_sparkle(draw, x1_start - 20, y1_row + 10, radius=7, color=(249, 226, 156))
+    draw.text((x1_start, y1_row), lbl1, fill=(249, 226, 156), font=font_label1)
+    draw.text((x1_start + w1_lbl, y1_row), txt1, fill=(255, 255, 255), font=font_addr1)
 
-    lbl2 = f"{config.get('addressPrimaryLabel', 'ADDRESS')} :  "
+    lbl2 = f"{config.get('addressPrimaryLabel', 'LOCATION')} :  "
     txt2 = config.get("addressPrimary", "NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
-    if len(txt2) > 64:
-        txt2 = txt2.replace("Agra-Mumbai Highway, ", "")
-    b_lbl2 = draw.textbbox((0, 0), lbl2, font=font_label)
-    b_txt2 = draw.textbbox((0, 0), txt2, font=font_addr)
+    f_size2 = 21
+    font_label2 = get_font(f_size2, bold=True)
+    font_addr2 = get_font(f_size2, bold=True)
+    b_lbl2 = draw.textbbox((0, 0), lbl2, font=font_label2)
+    b_txt2 = draw.textbbox((0, 0), txt2, font=font_addr2)
+    while ((b_lbl2[2] - b_lbl2[0]) + (b_txt2[2] - b_txt2[0])) > (w - 230) and f_size2 > 14:
+        f_size2 -= 1
+        font_label2 = get_font(f_size2, bold=True)
+        font_addr2 = get_font(f_size2, bold=True)
+        b_lbl2 = draw.textbbox((0, 0), lbl2, font=font_label2)
+        b_txt2 = draw.textbbox((0, 0), txt2, font=font_addr2)
     w2_lbl = b_lbl2[2] - b_lbl2[0]
     w2_txt = b_txt2[2] - b_txt2[0]
     total_w2 = w2_lbl + w2_txt
     x2_start = (w - total_w2) / 2
-    y2_row = info_y1 + 75
-    draw_sparkle(draw, x2_start - 20, y2_row + 12, radius=7, color=(249, 226, 156))
-    draw.text((x2_start, y2_row), lbl2, fill=(249, 226, 156), font=font_label)
-    draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr)
+    y2_row = info_y1 + 75 + (21 - f_size2) // 2
+    draw_sparkle(draw, x2_start - 20, y2_row + 10, radius=7, color=(249, 226, 156))
+    draw.text((x2_start, y2_row), lbl2, fill=(249, 226, 156), font=font_label2)
+    draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr2)
 
     phone_disp = config.get("phoneDisplay") or config.get("phone", "90351 70841")
     phone_text = f"Call / Reservation: {phone_disp}"
@@ -758,7 +786,7 @@ def build_hub_standee(config, bg_img, output_filenames=["table_standee_printable
     canvas = bg_img.copy()
     draw = ImageDraw.Draw(canvas)
     draw_indri_luxury_borders(draw, w, h)
-    draw_brand_header(canvas, draw, w)
+    draw_brand_header(canvas, draw, w, config)
 
     font_cta = get_font(46, bold=True)
     font_pill = get_font(22, bold=True)
@@ -836,7 +864,7 @@ def build_dual_direct_standee(config, bg_img, output_filename="standee_dual_dire
     canvas = bg_img.copy()
     draw = ImageDraw.Draw(canvas)
     draw_indri_luxury_borders(draw, w, h)
-    draw_brand_header(canvas, draw, w)
+    draw_brand_header(canvas, draw, w, config)
 
     font_cta = get_font(42, bold=True)
     font_sub_cta = get_font(23, bold=True)
@@ -856,6 +884,7 @@ def build_dual_direct_standee(config, bg_img, output_filename="standee_dual_dire
 
     google_url = config.get("googleReviewUrl", "https://www.google.com/gasearch?q=awadh%20restaurant")
     insta_url = config.get("instagramUrl", "https://www.instagram.com/awadh_restaurant__?stkn=ODdiYTBwdDdna3Q1")
+    insta_handle = config.get("instagramHandle", "@awadh_restaurant__").upper()
 
     qr_g = generate_styled_qr(google_url, target_size=404)
     qr_i = generate_styled_qr(insta_url, target_size=404)
@@ -880,7 +909,7 @@ def build_dual_direct_standee(config, bg_img, output_filename="standee_dual_dire
     draw_instagram_icon(draw, right_x + 54, cards_y + 45, size=24)
     draw.text((right_x + 80, cards_y + 33), "Follow Us on Instagram", fill=(255, 255, 255), font=font_card_head_i)
     canvas.paste(qr_i, (right_x + (card_w - 404) // 2, cards_y + 88))
-    i_foot = "FOLLOW @AWADH_RESTAURANT__"
+    i_foot = f"FOLLOW {insta_handle}"
     bbox = draw.textbbox((0, 0), i_foot, font=font_card_sub)
     draw.text((right_x + (card_w - (bbox[2] - bbox[0])) / 2, cards_y + 511), i_foot, fill=(12, 18, 32), font=font_card_sub)
 
@@ -922,17 +951,18 @@ def build_single_direct_standee(config, bg_img, url, mode="google", output_filen
     canvas = bg_img.copy()
     draw = ImageDraw.Draw(canvas)
     draw_indri_luxury_borders(draw, w, h)
-    draw_brand_header(canvas, draw, w)
+    draw_brand_header(canvas, draw, w, config)
 
     font_cta = get_font(44, bold=True)
     font_pill = get_font(24, bold=True)
+    insta_handle = config.get("instagramHandle", "@awadh_restaurant__")
 
     if mode == "google":
         cta_text = "RATE US ON GOOGLE"
         pill_label = "Rate Us on Google  •  5-Star Rating"
     else:
         cta_text = "FOLLOW US ON INSTAGRAM"
-        pill_label = "Follow Us on Instagram  •  @awadh_restaurant__"
+        pill_label = f"Follow Us on Instagram  •  {insta_handle}"
 
     bbox = draw.textbbox((0, 0), cta_text, font=font_cta)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, 492), cta_text, fill=(255, 255, 255), font=font_cta)
@@ -977,12 +1007,13 @@ def build_mobile_landing_preview(config, bg_img, output_filename="mobile_landing
     canvas = bg_img.copy()
     draw = ImageDraw.Draw(canvas)
     draw_indri_luxury_borders(draw, w, h)
-    draw_brand_header(canvas, draw, w)
+    draw_brand_header(canvas, draw, w, config)
 
     font_card_title = get_font(32, bold=True)
     font_card_desc = get_font(23, bold=False)
     font_card_tag = get_font(22, bold=True)
     font_sec = get_font(22, bold=True)
+    insta_handle = config.get("instagramHandle", "@awadh_restaurant__")
 
     glass = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     gdraw = ImageDraw.Draw(glass)
@@ -1011,7 +1042,7 @@ def build_mobile_landing_preview(config, bg_img, output_filename="mobile_landing
     draw_instagram_icon(draw, 207, c2_y1 + 101, size=64)
     draw.text((300, c2_y1 + 38), "Follow Us on Instagram", fill=(255, 255, 255), font=font_card_title)
     draw.text((300, c2_y1 + 86), "Explore royal delicacies, reels & fine dining vibes", fill=(203, 213, 225), font=font_card_desc)
-    draw.text((300, c2_y1 + 131), "@awadh_restaurant__", fill=(247, 223, 148), font=font_card_tag)
+    draw.text((300, c2_y1 + 131), insta_handle, fill=(247, 223, 148), font=font_card_tag)
     ax2, ay2 = w - 183, c2_y1 + 103
     draw.ellipse([ax2 - 32, ay2 - 32, ax2 + 32, ay2 + 32], fill=(16, 24, 42), outline=(212, 175, 55), width=2)
     draw.line([ax2 - 12, ay2, ax2 + 10, ay2], fill=(247, 223, 148), width=3)
@@ -1055,11 +1086,76 @@ def build_mobile_landing_preview(config, bg_img, output_filename="mobile_landing
     print(f"[OK] Generated {output_filename}")
 
 
+def sync_html_files(config, config_path="config.js"):
+    """
+    Bake config.js values and deterministic cache-buster version (?v=<hash>)
+    into index.html and standee.html so browser & CDN caches never serve stale content.
+    """
+    ver = "1"
+    if os.path.exists(config_path):
+        with open(config_path, "rb") as f:
+            ver = hashlib.md5(f.read()).hexdigest()[:8]
+
+    name = config.get("name", "Awadh Fine Dine Restaurant")
+    subname = config.get("subname", "AWADH FINE DINE RESTAURANT")
+    tagline = config.get("tagline", "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE")
+    highlight = config.get("highlight", "Royal Awadhi, North Indian & Global Family Dining")
+    addr = config.get("addressPrimary", "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
+    phone = config.get("phone", "9035170841")
+    phone_disp = config.get("phoneDisplay") or phone
+    g_url = config.get("googleReviewUrl", "")
+    i_url = config.get("instagramUrl", "")
+    i_handle = config.get("instagramHandle", "@awadh_restaurant__")
+
+    # 1. Sync index.html
+    if os.path.exists("index.html"):
+        with open("index.html", "r", encoding="utf-8") as f:
+            html = f.read()
+        html = re.sub(r'(<title id="pageTitle">).*?(</title>)', lambda m: f"{m.group(1)}{name} | Rate Us on Google & Follow Us on Instagram{m.group(2)}", html)
+        html = re.sub(r'(<div class="brand-subname" id="uiSubname">).*?(</div>)', lambda m: f"{m.group(1)}{subname}{m.group(2)}", html)
+        html = re.sub(r'(<span id="uiTagline">).*?(</span>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", html)
+        html = re.sub(r'(<div class="address-line" id="uiHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", html)
+        html = re.sub(r'(<div class="address-line" id="uiAddressPrimary">).*?(</div>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", html)
+        html = re.sub(r'(<a href="tel:)[^"]*(" class="phone-link" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{re.sub(r'\\s+', '', phone)}{m.group(2)}", html)
+        html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", html)
+        html = re.sub(r'(<div class="insta-handle" id="uiInstaHandle">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle}{m.group(2)}", html)
+        if g_url:
+            html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="action-card primary-card" id="googleCard">)', lambda m: f"{m.group(1)}{g_url}{m.group(2)}", html)
+        if i_url:
+            html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="action-card" id="instaCard">)', lambda m: f"{m.group(1)}{i_url}{m.group(2)}", html)
+        html = re.sub(r'config\.js\?v=[a-zA-Z0-9_]+', f'config.js?v={ver}', html)
+        with open("index.html", "w", encoding="utf-8") as f:
+            f.write(html)
+        print(f"[OK] Synced index.html with config.js (v={ver})")
+
+    # 2. Sync standee.html
+    if os.path.exists("standee.html"):
+        with open("standee.html", "r", encoding="utf-8") as f:
+            shtml = f.read()
+        shtml = re.sub(r'(<div class="standee-subname" id="stSubname">).*?(</div>)', lambda m: f"{m.group(1)}{subname}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<div class="standee-location" id="stTagline">).*?(</div>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<span id="stHighlight">).*?(</span>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<span id="stAddress">).*?(</span>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<div class="standee-phone" id="stPhone">).*?(</div>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<div class="dual-qr-foot" id="stInstaFoot">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle.upper()}{m.group(2)}", shtml)
+        shtml = re.sub(r'config\.js\?v=[a-zA-Z0-9_]+', f'config.js?v={ver}', shtml)
+        with open("standee.html", "w", encoding="utf-8") as f:
+            f.write(shtml)
+        print(f"[OK] Synced standee.html with config.js (v={ver})")
+
+
 def main():
-    print("Preparing Awadh Fine Dine Restaurant brand logos and architectural photos...")
-    prepare_brand_assets()
+    assets_ready = all(os.path.exists(f) for f in [
+        "awadh_title.png", "logo_with_gold_rim.png", "logo.png",
+        "ambience_1.jpg", "ambience_2.jpg", "ambience_3.jpg", "ambience_4.jpg"
+    ])
+    if not assets_ready:
+        print("Preparing Awadh Fine Dine Restaurant brand logos and architectural photos...")
+        prepare_brand_assets()
 
     config = load_config("config.js")
+    sync_html_files(config, "config.js")
+
     landing_url = config.get("landingPageUrl", "https://hospitalityqr.github.io/Awadh-qr/?v=1")
     google_url = config.get("googleReviewUrl", "https://www.google.com/gasearch?q=awadh%20restaurant")
     insta_url = config.get("instagramUrl", "https://www.instagram.com/awadh_restaurant__?stkn=ODdiYTBwdDdna3Q1")
@@ -1069,10 +1165,13 @@ def main():
     print(" - Google :", google_url[:80] + "...")
     print(" - Insta  :", insta_url)
 
-    print("Generating shared Awadh Luxury Ambience Background...")
-    bg_img = create_ambience_luxury_background(1200, 1800)
-    bg_img.save("bg_ambience_luxury.jpg", quality=93)
-    print("[OK] Saved bg_ambience_luxury.jpg")
+    if os.path.exists("bg_ambience_luxury.jpg"):
+        bg_img = Image.open("bg_ambience_luxury.jpg").convert("RGB")
+    else:
+        print("Generating shared Awadh Luxury Ambience Background...")
+        bg_img = create_ambience_luxury_background(1200, 1800)
+        bg_img.save("bg_ambience_luxury.jpg", quality=93)
+        print("[OK] Saved bg_ambience_luxury.jpg")
 
     print("Generating standalone high-res luxury QR codes...")
     qr_hub = generate_styled_qr(landing_url, target_size=800)
