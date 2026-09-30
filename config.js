@@ -35,7 +35,7 @@ window.RESTAURANT_CONFIG = {
     instagramHandle: "@awadh_restaurant__",
 
     // 4. Hosted Landing Page URL (With ?v=1 to bypass mobile browser cache)
-    landingPageUrl: "https://hospitalityqr.github.io/AWADH-QR/?v=1",
+    landingPageUrl: "https://hospitalityqr.github.io/Awadh-qr/?v=1",
 
     // 5. Auto-Redirect Behavior
     autoRedirectToGoogle: false,

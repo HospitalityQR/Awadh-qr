@@ -772,7 +772,7 @@ def build_hub_standee(config, bg_img, output_filenames=["table_standee_printable
     draw_instagram_icon(draw, ix1 + 34, iy1 + pill_h // 2, size=24)
     draw.text((ix1 + 60, iy1 + 14), label_i, fill=(255, 255, 255), font=font_pill)
 
-    qr_url = config.get("landingPageUrl", "https://hospitalityqr.github.io/AWADH-QR/?v=1")
+    qr_url = config.get("landingPageUrl", "https://hospitalityqr.github.io/Awadh-qr/?v=1")
     card_size = 752
     qr_size = 674
     qr_img = generate_styled_qr(qr_url, target_size=qr_size)
@@ -1040,7 +1040,7 @@ def main():
     prepare_brand_assets()
 
     config = load_config("config.js")
-    landing_url = config.get("landingPageUrl", "https://hospitalityqr.github.io/AWADH-QR/?v=1")
+    landing_url = config.get("landingPageUrl", "https://hospitalityqr.github.io/Awadh-qr/?v=1")
     google_url = config.get("googleReviewUrl", "https://www.google.com/gasearch?q=awadh%20restaurant")
     insta_url = config.get("instagramUrl", "https://www.instagram.com/awadh_restaurant__?stkn=ODdiYTBwdDdna3Q1")
 
