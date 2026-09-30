@@ -402,10 +402,10 @@
 
         <!-- Header -->
         <div class="standee-header">
-            <img src="logo_with_gold_rim.png?v=1" alt="Awadh Logo" class="standee-logo">
-            <img src="awadh_title.png?v=1" alt="Awadh Fine Dine Restaurant" class="standee-hindi-title">
-            <div class="standee-subname">AWADH FINE DINE RESTAURANT</div>
-            <div class="standee-location">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</div>
+            <img src="logo_with_gold_rim.png?v=1" alt="Awadh Logo" class="standee-logo" id="stLogo">
+            <img src="awadh_title.png?v=1" alt="Awadh Fine Dine Restaurant" class="standee-hindi-title" id="stHindiTitle">
+            <div class="standee-subname" id="stSubname">AWADH FINE DINE RESTAURANT</div>
+            <div class="standee-location" id="stTagline">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</div>
             <div class="standee-divider"><div class="standee-diamond"></div></div>
         </div>
 
@@ -447,7 +447,7 @@
                 <div class="dual-qr-box">
                     <div class="dual-qr-header">Follow Us on Instagram</div>
                     <img src="qr_instagram_direct.png?v=1" alt="Instagram QR">
-                    <div class="dual-qr-foot">@AWADH_RESTAURANT__</div>
+                    <div class="dual-qr-foot" id="stInstaFoot">@AWADH_RESTAURANT__</div>
                 </div>
             </div>
         </div>
@@ -455,10 +455,10 @@
         <!-- Footer -->
         <div class="standee-footer">
             <div class="standee-info-box">
-                <div class="standee-addr"><strong>✦ 100% PURE VEG:</strong> Royal Awadhi, North Indian & Global Fine Dining</div>
+                <div class="standee-addr"><strong>✦ 100% PURE VEG:</strong> <span id="stHighlight">Royal Awadhi, North Indian & Global Fine Dining</span></div>
                 <div class="standee-addr-divider"></div>
-                <div class="standee-addr"><strong>✦ LOCATION:</strong> NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</div>
-                <div class="standee-phone">Call / Reservation: 90351 70841</div>
+                <div class="standee-addr"><strong>✦ LOCATION:</strong> <span id="stAddress">NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</span></div>
+                <div class="standee-phone" id="stPhone">Call / Reservation: 90351 70841</div>
             </div>
             <div class="standee-thanks">
                 <span>✦</span>
@@ -468,7 +468,22 @@
         </div>
     </div>
 
+    <script src="config.js?v=1"></script>
     <script>
+        (function () {
+            const cfg = window.RESTAURANT_CONFIG;
+            if (!cfg) return;
+            if (cfg.subname) document.getElementById('stSubname').textContent = cfg.subname;
+            if (cfg.tagline) document.getElementById('stTagline').textContent = cfg.tagline;
+            if (cfg.addressPrimary) document.getElementById('stAddress').textContent = cfg.addressPrimary;
+            if (cfg.phoneDisplay || cfg.phone) {
+                document.getElementById('stPhone').textContent = 'Call / Reservation: ' + (cfg.phoneDisplay || cfg.phone);
+            }
+            if (cfg.instagramHandle) {
+                document.getElementById('stInstaFoot').textContent = cfg.instagramHandle.toUpperCase();
+            }
+        })();
+
         function setStandeeMode(mode, btn) {
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
