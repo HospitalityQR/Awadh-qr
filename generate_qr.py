@@ -512,6 +512,9 @@ def draw_instagram_icon(draw, cx, cy, size=26):
     draw.ellipse([cx + half - 7, cy - half + 4, cx + half - 4, cy - half + 7], fill=(255, 255, 255))
 
 
+_QR_CACHE = {}
+
+
 def generate_styled_qr(url, target_size=680):
     """
     Generate an Ultra-Luxury Mudoven-style QR Code with:
@@ -519,6 +522,9 @@ def generate_styled_qr(url, target_size=680):
     - Custom rounded finder eyes with Saffron-Orange centers
     - Embedded 24k Gold-Rimmed Circular Awadh Medallion in the center
     """
+    if url in _QR_CACHE:
+        return _QR_CACHE[url].resize((target_size, target_size), Image.Resampling.LANCZOS)
+
     is_long_url = len(url) > 140
     err_corr = qrcode.constants.ERROR_CORRECT_M if is_long_url else qrcode.constants.ERROR_CORRECT_H
 
@@ -618,6 +624,7 @@ def generate_styled_qr(url, target_size=680):
         logo_im = Image.open(logo_path).convert("RGBA").resize((logo_px, logo_px), Image.Resampling.LANCZOS)
         img.paste(logo_im, (cx_px - logo_px // 2, cy_px - logo_px // 2), mask=logo_im)
 
+    _QR_CACHE[url] = img
     return img.resize((target_size, target_size), Image.Resampling.LANCZOS)
 
 

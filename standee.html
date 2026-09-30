@@ -487,6 +487,24 @@
         applyStandeeConfig(window.RESTAURANT_CONFIG);
 
         if (window.location.protocol !== 'file:') {
+            fetch('https://api.github.com/repos/HospitalityQR/Awadh-qr/contents/config.js?ref=main&_t=' + Date.now(), {
+                headers: { 'Accept': 'application/vnd.github.v3+json' },
+                cache: 'no-store'
+            })
+                .then(function (res) { return res.ok ? res.json() : null; })
+                .then(function (data) {
+                    if (!data || !data.content) return;
+                    try {
+                        var bin = atob(data.content.replace(/\s/g, ''));
+                        var bytes = new Uint8Array(bin.length);
+                        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                        var code = new TextDecoder('utf-8').decode(bytes);
+                        new Function(code)();
+                        applyStandeeConfig(window.RESTAURANT_CONFIG);
+                    } catch (e) {}
+                })
+                .catch(function () {});
+
             fetch('config.js?_t=' + Date.now(), { cache: 'no-store' })
                 .then(function (res) { return res.ok ? res.text() : null; })
                 .then(function (code) {
