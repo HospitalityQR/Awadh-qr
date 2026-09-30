@@ -7,7 +7,7 @@
 window.RESTAURANT_CONFIG = {
     // 1. Brand Identity (Awadh Fine Dine Restaurant • 100% Pure Veg)
     name: "Naman Garg Awadh Fine Dine Restaurant",
-    subname: "AWADH FINE DINE RESTAURANT",
+    subname: "Naman AWADH FINE DINE RESTAURANT",
     hindiTitleUrl: "awadh_title.png?v=1",
     tagline: "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE",
     highlight: "100% Pure Vegetarian • Royal Awadhi & North Indian Delicacies • Grand Ambience",
