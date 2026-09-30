@@ -3,6 +3,7 @@ import re
 import json
 import math
 import shutil
+import hashlib
 import qrcode
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
