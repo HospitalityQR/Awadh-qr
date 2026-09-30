@@ -1102,6 +1102,7 @@ def sync_html_files(config, config_path="config.js"):
     highlight = config.get("highlight", "Royal Awadhi, North Indian & Global Family Dining")
     addr = config.get("addressPrimary", "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
     phone = config.get("phone", "9035170841")
+    clean_phone = re.sub(r"\s+", "", phone)
     phone_disp = config.get("phoneDisplay") or phone
     g_url = config.get("googleReviewUrl", "")
     i_url = config.get("instagramUrl", "")
@@ -1116,7 +1117,7 @@ def sync_html_files(config, config_path="config.js"):
         html = re.sub(r'(<span id="uiTagline">).*?(</span>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiAddressPrimary">).*?(</div>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", html)
-        html = re.sub(r'(<a href="tel:)[^"]*(" class="phone-link" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{re.sub(r'\\s+', '', phone)}{m.group(2)}", html)
+        html = re.sub(r'(<a href="tel:)[^"]*(" class="phone-link" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
         html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", html)
         html = re.sub(r'(<div class="insta-handle" id="uiInstaHandle">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle}{m.group(2)}", html)
         if g_url:
