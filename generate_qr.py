@@ -63,6 +63,18 @@ def get_font(size, bold=False, italic=False, serif=False):
                 return ImageFont.truetype(font_path, size)
             except Exception:
                 pass
+
+    # Linux / Ubuntu fallback fonts (for GitHub Actions runner)
+    linux_candidates = [
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf" if (serif and bold) else "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ]
+    for lf in linux_candidates:
+        if os.path.exists(lf):
+            try:
+                return ImageFont.truetype(lf, size)
+            except Exception:
+                pass
     return ImageFont.load_default()
 
 
@@ -608,10 +620,12 @@ def generate_styled_qr(url, target_size=680):
     return img.resize((target_size, target_size), Image.Resampling.LANCZOS)
 
 
-def draw_brand_header(canvas, draw, w=1200):
+def draw_brand_header(canvas, draw, w=1200, config=None):
     """
     Draw the Compact & Balanced Awadh Fine Dine Restaurant Luxury Header.
     """
+    if config is None:
+        config = {}
     logo_path = "logo_with_gold_rim.png" if os.path.exists("logo_with_gold_rim.png") else "logo.png"
     if os.path.exists(logo_path):
         logo = Image.open(logo_path).convert("RGBA")
@@ -633,12 +647,13 @@ def draw_brand_header(canvas, draw, w=1200):
         canvas.paste(title_img, (hx, hy), mask=title_img)
 
     font_midway = get_font(27, bold=True)
-    midway_text = "A W A D H   F I N E   D I N E   R E S T A U R A N T"
+    raw_sub = config.get("subname", "AWADH FINE DINE RESTAURANT").strip().upper()
+    midway_text = "   ".join([" ".join(list(word)) for word in raw_sub.split()])
     bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, 354), midway_text, fill=(247, 223, 148), font=font_midway)
 
     font_sub = get_font(18, bold=True)
-    sub_text = "100% PURE VEG  •  ROYAL FAMILY DINING  •  RAU, INDORE"
+    sub_text = config.get("tagline", "100% PURE VEG  •  ROYAL FAMILY DINING  •  RAU, INDORE")
     bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, 396), sub_text, fill=(255, 255, 255), font=font_sub)
 
@@ -652,7 +667,7 @@ def draw_footer(canvas, draw, config, w=1200):
     Draw the Ultra-Luxury Address & Phone Box + Gold Sparkle Thank-You Footer.
     """
     font_label = get_font(21, bold=True)
-    font_addr = get_font(22, bold=True)
+    font_addr = get_font(21, bold=True)
     font_phone = get_font(33, bold=True)
     font_thanks = get_font(28, bold=False, italic=True, serif=True)
 
@@ -689,7 +704,9 @@ def draw_footer(canvas, draw, config, w=1200):
     canvas.paste(canvas_rgba.convert("RGB"))
 
     lbl1 = "100% PURE VEG :  "
-    txt1 = "Royal Awadhi, North Indian & Global Fine Dining"
+    txt1 = config.get("highlight", "Royal Awadhi, North Indian & Global Fine Dining")
+    if len(txt1) > 54:
+        txt1 = "Royal Awadhi, North Indian & Global Fine Dining"
     b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label)
     b_txt1 = draw.textbbox((0, 0), txt1, font=font_addr)
     w1_lbl = b_lbl1[2] - b_lbl1[0]
@@ -701,8 +718,10 @@ def draw_footer(canvas, draw, config, w=1200):
     draw.text((x1_start, y1_row), lbl1, fill=(249, 226, 156), font=font_label)
     draw.text((x1_start + w1_lbl, y1_row), txt1, fill=(255, 255, 255), font=font_addr)
 
-    lbl2 = "ADDRESS :  "
-    txt2 = "NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore"
+    lbl2 = f"{config.get('addressPrimaryLabel', 'ADDRESS')} :  "
+    txt2 = config.get("addressPrimary", "NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
+    if len(txt2) > 64:
+        txt2 = txt2.replace("Agra-Mumbai Highway, ", "")
     b_lbl2 = draw.textbbox((0, 0), lbl2, font=font_label)
     b_txt2 = draw.textbbox((0, 0), txt2, font=font_addr)
     w2_lbl = b_lbl2[2] - b_lbl2[0]
@@ -714,7 +733,7 @@ def draw_footer(canvas, draw, config, w=1200):
     draw.text((x2_start, y2_row), lbl2, fill=(249, 226, 156), font=font_label)
     draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr)
 
-    phone_disp = config.get("phoneDisplay", "90351 70841")
+    phone_disp = config.get("phoneDisplay") or config.get("phone", "90351 70841")
     phone_text = f"Call / Reservation: {phone_disp}"
     bbox = draw.textbbox((0, 0), phone_text, font=font_phone)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, info_y1 + 139), phone_text, fill=(250, 228, 152), font=font_phone)
