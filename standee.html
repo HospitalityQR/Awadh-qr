@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awadh Fine Dine Restaurant (अवध) — Printable QR Standee Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --obsidian-top: #151929;
+            --obsidian-mid: #0b0f1c;
+            --obsidian-deep: #050811;
+            --gold-primary: #d4af37;
+            --gold-light: #f9e29c;
+            --gold-dark: #9e7c1f;
+            --awadh-orange: #f06513;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #050811;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 16px 60px;
+        }
+
+        /* Studio Toolbar (Hidden when printing) */
+        .toolbar {
+            width: 100%;
+            max-width: 940px;
+            background: rgba(14, 20, 34, 0.94);
+            border: 1px solid rgba(212, 175, 55, 0.52);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+        }
+
+        .toolbar-title {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+        }
+
+        .toolbar-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            padding: 9px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.42);
+            background: rgba(8, 12, 22, 0.85);
+            color: #e5e5e5;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn.active,
+        .mode-btn:hover {
+            background: linear-gradient(135deg, #f9e29c 0%, #d4af37 60%, #f06513 100%);
+            color: #060913;
+            border-color: #f9e29c;
+        }
+
+        .print-btn {
+            padding: 9px 18px;
+            border-radius: 10px;
+            border: 1.5px solid #f9e29c;
+            background: #f06513;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* 4x6 Inch (1200x1800 aspect ratio = 2:3) Standee Card */
+        .standee-card {
+            width: 480px;
+            height: 720px;
+            background-color: var(--obsidian-deep);
+            background-image: url('bg_ambience_luxury.jpg?v=1');
+            background-size: cover;
+            background-position: center center;
+            position: relative;
+            padding: 22px 26px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
+        }
+
+        /* Outer & Inner Gold Borders */
+        .border-outer {
+            position: absolute;
+            inset: 14px;
+            border: 2px solid var(--gold-primary);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .border-inner {
+            position: absolute;
+            inset: 20px;
+            border: 1px solid var(--gold-dark);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Header Section */
+        .standee-header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .standee-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: contain;
+            margin-bottom: 0;
+            filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.6));
+        }
+
+        .standee-hindi-title {
+            width: 178px;
+            height: auto;
+            margin-top: -4px;
+            margin-bottom: 2px;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
+        }
+
+        .standee-subname {
+            font-family: 'Cinzel', serif;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 2.3px;
+            margin-bottom: 2px;
+        }
+
+        .standee-location {
+            font-size: 8px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.9px;
+            margin-bottom: 5px;
+        }
+
+        .standee-divider {
+            width: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        .standee-divider::before,
+        .standee-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gold-primary);
+        }
+        .standee-diamond {
+            width: 6px;
+            height: 6px;
+            background: var(--gold-light);
+            transform: rotate(45deg);
+            margin: 0 6px;
+        }
+
+        /* Body Modes */
+        .standee-body {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .scan-heading {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .pills-wrap {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .standee-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 13px;
+            border-radius: 20px;
+            background: rgba(12, 18, 30, 0.94);
+            border: 1px solid #d4af37;
+            color: #ffffff;
+            font-size: 9.5px;
+            font-weight: 700;
+        }
+
+        .standee-pill svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .qr-card-single {
+            width: 286px;
+            height: 286px;
+            background: #ffffff;
+            border: 2px solid var(--gold-primary);
+            border-radius: 14px;
+            padding: 13px;
+            margin-bottom: -2px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-card-single img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Dual QR Mode */
+        .dual-qr-grid {
+            display: none;
+            width: 100%;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 0 6px;
+        }
+
+        .dual-qr-box {
+            background: #ffffff;
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dual-qr-header {
+            background: #0d1322;
+            border: 1px solid var(--gold-primary);
+            color: #ffffff;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 14px;
+            width: 94%;
+        }
+
+        .dual-qr-box img {
+            width: 155px;
+            height: 155px;
+            object-fit: contain;
+        }
+
+        .dual-qr-foot {
+            font-size: 8px;
+            font-weight: 800;
+            color: #0d1322;
+        }
+
+        /* Footer Section */
+        .standee-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 3;
+            padding: 0 2px;
+        }
+
+        .standee-info-box {
+            width: 99%;
+            background: linear-gradient(180deg, rgba(11, 16, 28, 0.95) 0%, rgba(6, 9, 18, 0.98) 100%);
+            border: 1.8px solid var(--gold-primary);
+            border-radius: 11px;
+            padding: 8px 10px 9px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+        }
+
+        .standee-addr {
+            font-size: 9.5px;
+            font-weight: 600;
+            color: #faf7f0;
+            line-height: 1.3;
+        }
+
+        .standee-addr strong {
+            color: var(--gold-light);
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .standee-addr-divider {
+            width: 82%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.45), transparent);
+        }
+
+        .standee-phone {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 0.4px;
+            padding: 3px 16px;
+            margin-top: 2px;
+            border-radius: 8px;
+            background: rgba(212, 175, 55, 0.16);
+            border: 1px solid rgba(249, 226, 156, 0.6);
+        }
+
+        .standee-thanks {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 11.5px;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .toolbar {
+                display: none !important;
+            }
+            .standee-card {
+                box-shadow: none;
+                margin: 0 auto;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div class="toolbar-title">AWADH FINE DINE RESTAURANT (अवध) • 300 DPI STANDEE STUDIO</div>
+        <div class="toolbar-controls">
+            <button class="mode-btn active" onclick="setStandeeMode('hub', this)">1. Smart Hub Standee</button>
+            <button class="mode-btn" onclick="setStandeeMode('dual', this)">2. Dual Direct QR</button>
+            <button class="mode-btn" onclick="setStandeeMode('google', this)">3. Rate Us on Google Direct</button>
+            <button class="mode-btn" onclick="setStandeeMode('insta', this)">4. Follow Us on Instagram Direct</button>
+            <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+        </div>
+    </div>
+
+    <div class="standee-card">
+        <div class="border-outer"></div>
+        <div class="border-inner"></div>
+
+        <!-- Header -->
+        <div class="standee-header">
+            <img src="logo_with_gold_rim.png?v=1" alt="Awadh Logo" class="standee-logo">
+            <img src="awadh_title.png?v=1" alt="Awadh Fine Dine Restaurant" class="standee-hindi-title">
+            <div class="standee-subname">AWADH FINE DINE RESTAURANT</div>
+            <div class="standee-location">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</div>
+            <div class="standee-divider"><div class="standee-diamond"></div></div>
+        </div>
+
+        <!-- Body -->
+        <div class="standee-body">
+            <div class="scan-heading" id="stHeading">SCAN TO CONNECT</div>
+
+            <div class="pills-wrap" id="stPills">
+                <div class="standee-pill">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                        <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+                        <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 20.9 7.4 24 12 24z"/>
+                    </svg>
+                    <span>Rate Us on Google</span>
+                </div>
+                <div class="standee-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                    <span>Follow Us on Instagram</span>
+                </div>
+            </div>
+
+            <!-- Single QR Container -->
+            <div class="qr-card-single" id="singleQrWrap">
+                <img src="qr_code.png?v=1" alt="QR Code" id="singleQrImg">
+            </div>
+
+            <!-- Dual QR Container -->
+            <div class="dual-qr-grid" id="dualQrWrap">
+                <div class="dual-qr-box">
+                    <div class="dual-qr-header">Rate Us on Google</div>
+                    <img src="qr_google_direct.png?v=1" alt="Google Review QR">
+                    <div class="dual-qr-foot">★★★★★ RATE US ON GOOGLE</div>
+                </div>
+                <div class="dual-qr-box">
+                    <div class="dual-qr-header">Follow Us on Instagram</div>
+                    <img src="qr_instagram_direct.png?v=1" alt="Instagram QR">
+                    <div class="dual-qr-foot">@AWADH_RESTAURANT__</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="standee-footer">
+            <div class="standee-info-box">
+                <div class="standee-addr"><strong>✦ 100% PURE VEG:</strong> Royal Awadhi, North Indian & Global Fine Dining</div>
+                <div class="standee-addr-divider"></div>
+                <div class="standee-addr"><strong>✦ LOCATION:</strong> NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</div>
+                <div class="standee-phone">Call / Reservation: 90351 70841</div>
+            </div>
+            <div class="standee-thanks">
+                <span>✦</span>
+                <span>Thank you for dining with us!</span>
+                <span>✦</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setStandeeMode(mode, btn) {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const heading = document.getElementById('stHeading');
+            const singleWrap = document.getElementById('singleQrWrap');
+            const singleImg = document.getElementById('singleQrImg');
+            const dualWrap = document.getElementById('dualQrWrap');
+
+            if (mode === 'hub') {
+                heading.textContent = 'SCAN TO CONNECT';
+                singleWrap.style.display = 'flex';
+                dualWrap.style.display = 'none';
+                singleImg.src = 'qr_code.png?v=1';
+            } else if (mode === 'dual') {
+                heading.textContent = 'SCAN TO CONNECT DIRECTLY';
+                singleWrap.style.display = 'none';
+                dualWrap.style.display = 'grid';
+            } else if (mode === 'google') {
+                heading.textContent = 'RATE US ON GOOGLE';
+                singleWrap.style.display = 'flex';
+                dualWrap.style.display = 'none';
+                singleImg.src = 'qr_google_direct.png?v=1';
+            } else if (mode === 'insta') {
+                heading.textContent = 'FOLLOW US ON INSTAGRAM';
+                singleWrap.style.display = 'flex';
+                dualWrap.style.display = 'none';
+                singleImg.src = 'qr_instagram_direct.png?v=1';
+            }
+        }
+    </script>
+</body>
+</html>
