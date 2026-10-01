@@ -34,7 +34,7 @@ window.RESTAURANT_CONFIG = {
     ],
 
     // 3. Action Destination Links (Provided by User)
-    googleReviewUrl: "https://www.google.com/gasearch?q=awadh%20restaurant&source=sh/x/gs/m2/5#sv=CAESzQEKuQEStgEKd0FKaVQ0dEk2Y29jaTRsQ01zdFNWdW96bng2blh0aS1xQmgzczV3bnVLZXg3bl82bzhXVThHU25FN0lVZ1pna2lxWnF6QlhQdVRVbmpzaFg0QmxTcVFXcW1yVURIU2piN3ZockRWdUNfenRSdXFmWTh1emc5QlpFEhdIRVc5YXMzOEVmemRzZU1QaDhHQWdBaxoiQURzcjlmUl9aa3E4WmN4cFpGWTB3N2pxVG1LNWdiV2NaURIEODA1MRoBMyoAMAA4AUAAGAAg2_vdyQNKAhAB",
+    googleReviewUrl: "https://share.google/nW6e8GsQL5WBQJF04",
     instagramUrl: "https://www.instagram.com/awadh_restaurant__?stkn=ODdiYTBwdDdna3Q1",
     instagramHandle: "@awadh_restaurant__",
 

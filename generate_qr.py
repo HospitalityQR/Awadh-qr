@@ -227,80 +227,71 @@ def prepare_brand_assets():
         awadh_wordmark.save("awadh_title.png")
         print("[OK] Generated awadh_title.png (Transparent Saffron-Orange & Golden Bow Wordmark)")
 
-    # 2. Create 24k Gold-Rimmed Circular Royal Medallion (logo_with_gold_rim.png & logo.png)
-    size = 600
-    medallion = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    mdraw = ImageDraw.Draw(medallion)
+    # 2. Extract Official Logo from User-Uploaded PDF (media_1790833303189.pdf)
+    pdf_upload = r"C:\Users\Hp\.gemini\antigravity\brain\a1a66ee6-8bd9-4347-b1d6-d6aa21ac8024\.user_uploaded\media_1790833303189.pdf"
+    if os.path.exists(pdf_upload):
+        try:
+            import fitz
+            doc = fitz.open(pdf_upload)
+            page = doc[0]
+            mat = fitz.Matrix(4, 4)
+            pix = page.get_pixmap(matrix=mat, alpha=False)
+            pix.save("pdf_rendered_page.png")
+        except Exception as e:
+            print("PDF render note:", e)
 
-    # Outer 24k Gold Triple Ring
-    mdraw.ellipse([4, 4, size - 5, size - 5], fill=(212, 175, 55, 255), outline=(249, 226, 156, 255), width=6)
-    mdraw.ellipse([16, 16, size - 17, size - 17], fill=(148, 112, 24, 255))
-    mdraw.ellipse([22, 22, size - 23, size - 23], fill=(255, 252, 245, 255))
+    logo_trans = None
+    if os.path.exists("pdf_rendered_page.png"):
+        im_pdf = Image.open("pdf_rendered_page.png").convert("RGBA")
+        arr = np.array(im_pdf)
+        non_white = np.where((arr[:, :, 0] < 245) | (arr[:, :, 1] < 245) | (arr[:, :, 2] < 245))
+        y1, y2 = int(non_white[0].min()), int(non_white[0].max())
+        x1, x2 = int(non_white[1].min()), int(non_white[1].max())
+        pad = 30
+        crop_pdf = im_pdf.crop((max(0, x1 - pad), max(0, y1 - pad), min(im_pdf.width, x2 + pad), min(im_pdf.height, y2 + pad)))
+        crop_pdf.save("pdf_logo_clean.png")
 
-    inner_size = size - 56
-    inner_circle = Image.new("RGBA", (inner_size, inner_size), (255, 252, 244, 255))
-    idraw = ImageDraw.Draw(inner_circle)
+        # Make transparent
+        arr_crop = np.array(crop_pdf)
+        r, g, b = arr_crop[:, :, 0], arr_crop[:, :, 1], arr_crop[:, :, 2]
+        dist_white = np.maximum(np.maximum(255 - r, 255 - g), 255 - b)
+        alpha = np.clip((dist_white - 10) / 30.0 * 255.0, 0, 255).astype(np.uint8)
+        arr_crop[:, :, 3] = alpha
+        logo_trans = Image.fromarray(arr_crop, "RGBA")
+        logo_trans.save("pdf_logo_trans.png")
+    elif os.path.exists("pdf_logo_trans.png"):
+        logo_trans = Image.open("pdf_logo_trans.png").convert("RGBA")
+    else:
+        logo_trans = fg_clean
 
-    # Decorative saffron & emerald pure-veg heritage waves at bottom of medallion
-    idraw.pieslice([-40, int(inner_size * 0.73), inner_size + 40, inner_size + 110], 180, 360, fill=(240, 101, 19, 255))
-    idraw.pieslice([20, int(inner_size * 0.79), inner_size - 20, inner_size + 120], 180, 360, fill=(24, 138, 55, 255))
-    idraw.pieslice([75, int(inner_size * 0.85), inner_size - 75, inner_size + 130], 180, 360, fill=(212, 175, 55, 255))
+    # Create 24k Gold-Rimmed Circular Center Badge for QR Codes
+    size = 800
+    badge = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    bdraw = ImageDraw.Draw(badge)
+    bdraw.ellipse([6, 6, size - 7, size - 7], fill=(255, 255, 255, 255))
 
-    # 100% Pure Veg green badge at top center of medallion
-    veg_bx, veg_by = inner_size // 2, 70
-    veg_r = 21
-    idraw.rounded_rectangle(
-        [veg_bx - veg_r, veg_by - veg_r, veg_bx + veg_r, veg_by + veg_r],
-        radius=5,
-        fill=(255, 255, 255, 255),
-        outline=(22, 138, 54, 255),
-        width=3
-    )
-    idraw.ellipse([veg_bx - 10, veg_by - 10, veg_bx + 10, veg_by + 10], fill=(22, 138, 54, 255))
+    if logo_trans is not None:
+        target_w = int(size * 0.82)
+        target_h = int(logo_trans.height * (target_w / logo_trans.width))
+        logo_res = logo_trans.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        cx = (size - target_w) // 2
+        cy = (size - target_h) // 2
+        badge.paste(logo_res, (cx, cy), mask=logo_res)
 
-    font_veg = get_font(19, bold=True)
-    veg_txt = "100% PURE VEG"
-    vb = idraw.textbbox((0, 0), veg_txt, font=font_veg)
-    idraw.text(((inner_size - (vb[2] - vb[0])) / 2, 100), veg_txt, fill=(22, 118, 46, 255), font=font_veg)
+    # Draw 24k gold rims on top
+    bdraw.ellipse([6, 6, size - 7, size - 7], outline=(212, 175, 55, 255), width=12)
+    bdraw.ellipse([18, 18, size - 19, size - 19], outline=(249, 226, 156, 200), width=3)
 
-    # Paste the clean extracted 'अवध' + Bow & Arrow emblem into the center of the medallion
-    if fg_clean is not None:
-        wm_copy = fg_clean.copy()
-        target_w = int(inner_size * 0.84)
-        target_h = int(wm_copy.height * (target_w / wm_copy.width))
-        wm_copy = wm_copy.resize((target_w, target_h), Image.Resampling.LANCZOS)
-        wx = (inner_size - target_w) // 2 + 8
-        wy = (inner_size - target_h) // 2 - 8
-        inner_circle.paste(wm_copy, (wx, wy), mask=wm_copy)
-
-    # Dark gold-rimmed 'AWADH RESTAURANT' plaque inside medallion below 'अवध'
-    font_fd = get_font(20, bold=True, serif=True)
-    fd_txt = "Awadh Restaurant"
-    fb = idraw.textbbox((0, 0), fd_txt, font=font_fd)
-    pill_w, pill_h = (fb[2] - fb[0]) + 40, 38
-    px1 = (inner_size - pill_w) // 2
-    py1 = 340
-    idraw.rounded_rectangle(
-        [px1, py1, px1 + pill_w, py1 + pill_h],
-        radius=9,
-        fill=(26, 22, 20, 255),
-        outline=(212, 175, 55, 255),
-        width=2
-    )
-    idraw.text(((inner_size - (fb[2] - fb[0])) / 2, py1 + 8), fd_txt, fill=(247, 215, 116, 255), font=font_fd)
-
-    # Apply circular mask
-    circle_mask = Image.new("L", (inner_size, inner_size), 0)
+    circle_mask = Image.new("L", (size, size), 0)
     cdraw = ImageDraw.Draw(circle_mask)
-    cdraw.ellipse([0, 0, inner_size - 1, inner_size - 1], fill=255)
-    medallion.paste(inner_circle, (28, 28), mask=circle_mask)
+    cdraw.ellipse([6, 6, size - 7, size - 7], fill=255)
 
-    # Inner hairline gold ring
-    mdraw.ellipse([25, 25, size - 26, size - 26], outline=(212, 175, 55, 235), width=5)
-
-    medallion.save("logo_with_gold_rim.png")
-    medallion.save("logo.png")
-    print("[OK] Generated logo_with_gold_rim.png & logo.png (24k Gold Rim Medallion)")
+    final_badge = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    final_badge.paste(badge, (0, 0), mask=circle_mask)
+    final_badge.save("logo_with_gold_rim.png")
+    final_badge.save("logo_qr_center.png")
+    final_badge.save("logo.png")
+    print("[OK] Generated logo_qr_center.png & logo_with_gold_rim.png (from attached PDF)")
 
     # 3. Generate Curated High-Contrast Ambience Photos from the 4 Uploaded Restaurant Photos
     # ambience_1.jpg: Iconic Warm Wood Facade & 3D 'अवध' Bow-and-Arrow Sign (from source_facade.png)
@@ -621,12 +612,12 @@ def generate_styled_qr(url, target_size=680):
             width=max(2, cell // 6)
         )
 
-    logo_path = "logo_with_gold_rim.png" if os.path.exists("logo_with_gold_rim.png") else "logo.png"
+    logo_path = "logo_qr_center.png" if os.path.exists("logo_qr_center.png") else ("logo_with_gold_rim.png" if os.path.exists("logo_with_gold_rim.png") else "logo.png")
     if os.path.exists(logo_path):
         logo_px = int(logo_mod_radius * 2.0 * cell)
         cx_px = canvas_px // 2
         cy_px = canvas_px // 2
-        pad_ring = max(6, cell // 3)
+        pad_ring = max(4, cell // 4)
         draw.ellipse(
             [cx_px - logo_px // 2 - pad_ring, cy_px - logo_px // 2 - pad_ring,
              cx_px + logo_px // 2 + pad_ring, cy_px + logo_px // 2 + pad_ring],
