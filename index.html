@@ -125,44 +125,72 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 1. Official Awadh Brand Header (Calligraphy Logo + Pure Veg Badge) */
-        .brand-logo-container {
-            position: relative;
+        /* 1. Official Awadh Brand Header & Top-Right Pure Veg Badge */
+        .pure-veg-top-badge {
+            position: absolute;
+            top: 13px;
+            right: 15px;
+            z-index: 10;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            margin: 6px auto 4px;
-            z-index: 3;
-            gap: 12px;
+            gap: 6px;
+            background: rgba(10, 15, 26, 0.85);
+            border: 1.2px solid rgba(34, 197, 94, 0.55);
+            padding: 3.5px 9px 3.5px 7px;
+            border-radius: 20px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 8px rgba(34, 197, 94, 0.22);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            user-select: none;
         }
 
-        .hindi-title-img {
-            width: 236px;
-            max-width: 80%;
-            height: auto;
-            display: block;
-            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85));
-        }
-
-        .pure-veg-mark {
-            width: 22px;
-            height: 22px;
-            border: 2px solid #22c55e;
-            border-radius: 4px;
+        .pure-veg-mark-box {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #22c55e;
+            border-radius: 3px;
             background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
-        .pure-veg-mark::after {
-            content: '';
-            width: 10px;
-            height: 10px;
+        .pure-veg-mark-circle {
+            width: 6.5px;
+            height: 6.5px;
             border-radius: 50%;
             background: #16a34a;
+            display: block;
+        }
+
+        .pure-veg-top-text {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #4ade80;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .brand-logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 6px auto 2px;
+            z-index: 3;
+            width: 100%;
+        }
+
+        .hindi-title-img {
+            width: 280px;
+            max-width: 90%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.9));
+            transition: transform 0.3s ease;
         }
 
         .brand-subname {
@@ -663,10 +691,17 @@
         <div class="corner-ornament corner-bl"></div>
         <div class="corner-ornament corner-br"></div>
 
-        <!-- 1. Official 'अवध' Calligraphy & Pure Veg Badge -->
+        <!-- Official Pure Veg Badge on Upper-Right Side ("right m upar side") -->
+        <div class="pure-veg-top-badge" title="100% Pure Vegetarian Restaurant">
+            <span class="pure-veg-mark-box">
+                <span class="pure-veg-mark-circle"></span>
+            </span>
+            <span class="pure-veg-top-text">PURE VEG</span>
+        </div>
+
+        <!-- 1. Official 'अवध Fine Dine Restaurant' Brand Logo -->
         <div class="brand-logo-container">
-            <img src="awadh_title.png?v=1" alt="अवध — Awadh Restaurant" class="hindi-title-img" id="uiHindiTitle">
-            <div class="pure-veg-mark" title="100% Pure Vegetarian"></div>
+            <img src="awadh_title.png?v=2" alt="अवध Fine Dine Restaurant" class="hindi-title-img" id="uiHindiTitle">
         </div>
 
         <div class="brand-subname" id="uiSubname">AWADH RESTAURANT</div>
@@ -801,7 +836,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=5cbe9954"></script>
+    <script src="config.js?v=bca44c53"></script>
     <script>
         function openLightbox(src) {
             const modal = document.getElementById('lightboxModal');

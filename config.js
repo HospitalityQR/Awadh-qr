@@ -8,7 +8,7 @@ window.RESTAURANT_CONFIG = {
     // 1. Brand Identity (Awadh Restaurant • 100% Pure Veg)
     name: "Awadh Restaurant",
     subname: "AWADH RESTAURANT",
-    hindiTitleUrl: "awadh_title.png?v=1",
+    hindiTitleUrl: "awadh_title.png?v=2",
     tagline: "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE",
     highlight: "Royal Awadhi & North Indian Delicacies • Grand Ambience",
     gardenHighlight: "Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining",
@@ -24,7 +24,7 @@ window.RESTAURANT_CONFIG = {
     whatsapp: "9826598289",
     whatsappDisplay: "+91 98265 98289",
     whatsappUrl: "https://wa.me/919826598289?text=Namaste%20Awadh%20Restaurant%2C%20I%20would%20like%20to%20connect%20for%20table%20reservation%20%2F%20inquiry.",
-    logoUrl: "awadh_title.png?v=1",
+    logoUrl: "awadh_title.png?v=2",
 
     // 2. Ambience Photos (Derived from Uploaded Awadh Exterior & Interior Photos)
     ambiencePhotos: [
@@ -38,8 +38,8 @@ window.RESTAURANT_CONFIG = {
     instagramUrl: "https://www.instagram.com/awadh_restaurant__?stkn=ODdiYTBwdDdna3Q1",
     instagramHandle: "@awadh_restaurant__",
 
-    // 4. Hosted Landing Page URL (With ?v=1 to bypass mobile browser cache)
-    landingPageUrl: "https://hospitalityqr.github.io/Awadh-qr/?v=1",
+    // 4. Hosted Landing Page URL (With ?v=2 to bypass mobile browser cache)
+    landingPageUrl: "https://hospitalityqr.github.io/Awadh-qr/?v=2",
 
     // 5. Auto-Redirect Behavior
     autoRedirectToGoogle: false,

@@ -9,6 +9,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 UPLOAD_DIR = r"C:\Users\Hp\.gemini\antigravity\brain\5eb7a8f4-fc16-43f0-823e-5a22048850c8\.user_uploaded"
+NEW_LOGO_UPLOAD = r"C:\Users\Hp\.gemini\antigravity\brain\ead0a610-abb0-4754-962a-ad541c935edf\.user_uploaded\media_1790851273639.jpg"
 LOGO_UPLOAD = os.path.join(UPLOAD_DIR, "media_1790789457490.png")
 NIGHT_UPLOAD = os.path.join(UPLOAD_DIR, "media_1790789469429.png")
 FACADE_UPLOAD = os.path.join(UPLOAD_DIR, "media_1790789481816.png")
@@ -204,11 +205,49 @@ def extract_awadh_logo_transparent(src_img):
     return fg_clean_img, canvas
 
 
+def extract_official_logo(src_input):
+    """
+    Extract the official 'अवध Fine Dine Restaurant' logo with Rama's divine bow & arrow
+    cleanly onto an RGBA transparent canvas without dark edge halos.
+    """
+    if isinstance(src_input, str):
+        if not os.path.exists(src_input):
+            return None
+        im_src = Image.open(src_input).convert("RGB")
+    else:
+        im_src = src_input.convert("RGB")
+
+    rgb = np.array(im_src, dtype=np.float32)
+    max_c = np.max(rgb, axis=2)
+
+    # Soft alpha ramp for anti-aliasing against pure black background
+    alpha = np.clip((max_c - 8.0) / 30.0, 0.0, 1.0)
+
+    # Un-multiply black to preserve rich edge vibrancy without black fringe
+    rgb_unblack = np.zeros_like(rgb)
+    for c in range(3):
+        rgb_unblack[:, :, c] = np.where(alpha > 0, np.clip(rgb[:, :, c] / np.maximum(alpha, 0.15), 0, 255), 0)
+
+    rgba = np.dstack([rgb_unblack, alpha * 255.0]).astype(np.uint8)
+    im = Image.fromarray(rgba, 'RGBA')
+
+    mask = alpha > 0.05
+    ys, xs = np.where(mask)
+    if len(xs) == 0 or len(ys) == 0:
+        return im
+    pad = 10
+    bbox = (max(0, int(xs.min()) - pad), max(0, int(ys.min()) - pad),
+            min(rgb.shape[1], int(xs.max()) + pad), min(rgb.shape[0], int(ys.max()) + pad))
+    return im.crop(bbox)
+
+
 def prepare_brand_assets():
     """
-    Process the 5 user-uploaded Awadh Restaurant files into ultra-luxury brand assets.
+    Process brand assets including official Awadh Fine Dine Restaurant logo.
     """
-    if os.path.exists(LOGO_UPLOAD):
+    if os.path.exists(NEW_LOGO_UPLOAD):
+        shutil.copyfile(NEW_LOGO_UPLOAD, "source_logo.jpg")
+    elif os.path.exists(LOGO_UPLOAD):
         shutil.copyfile(LOGO_UPLOAD, "source_logo.png")
     if os.path.exists(NIGHT_UPLOAD):
         shutil.copyfile(NIGHT_UPLOAD, "source_night.png")
@@ -219,79 +258,43 @@ def prepare_brand_assets():
     if os.path.exists(EXTERIOR_UPLOAD):
         shutil.copyfile(EXTERIOR_UPLOAD, "source_exterior.png")
 
-    # 1. Extract Transparent 'अवध' + Divine Bow & Arrow Wordmark (awadh_title.png)
-    fg_clean, awadh_wordmark = None, None
-    if os.path.exists("source_logo.png"):
-        src_logo = Image.open("source_logo.png")
-        fg_clean, awadh_wordmark = extract_awadh_logo_transparent(src_logo)
-        awadh_wordmark.save("awadh_title.png")
-        print("[OK] Generated awadh_title.png (Transparent Saffron-Orange & Golden Bow Wordmark)")
-
-    # 2. Extract Official Logo from User-Uploaded PDF (media_1790833303189.pdf)
-    pdf_upload = r"C:\Users\Hp\.gemini\antigravity\brain\a1a66ee6-8bd9-4347-b1d6-d6aa21ac8024\.user_uploaded\media_1790833303189.pdf"
-    if os.path.exists(pdf_upload):
-        try:
-            import fitz
-            doc = fitz.open(pdf_upload)
-            page = doc[0]
-            mat = fitz.Matrix(4, 4)
-            pix = page.get_pixmap(matrix=mat, alpha=False)
-            pix.save("pdf_rendered_page.png")
-        except Exception as e:
-            print("PDF render note:", e)
-
+    # 1. Process Official Awadh Fine Dine Restaurant Logo
+    src_path = "source_logo.jpg" if os.path.exists("source_logo.jpg") else ("source_logo.png" if os.path.exists("source_logo.png") else None)
     logo_trans = None
-    if os.path.exists("pdf_rendered_page.png"):
-        im_pdf = Image.open("pdf_rendered_page.png").convert("RGBA")
-        arr = np.array(im_pdf)
-        non_white = np.where((arr[:, :, 0] < 245) | (arr[:, :, 1] < 245) | (arr[:, :, 2] < 245))
-        y1, y2 = int(non_white[0].min()), int(non_white[0].max())
-        x1, x2 = int(non_white[1].min()), int(non_white[1].max())
-        pad = 30
-        crop_pdf = im_pdf.crop((max(0, x1 - pad), max(0, y1 - pad), min(im_pdf.width, x2 + pad), min(im_pdf.height, y2 + pad)))
-        crop_pdf.save("pdf_logo_clean.png")
-
-        # Make transparent
-        arr_crop = np.array(crop_pdf)
-        r, g, b = arr_crop[:, :, 0], arr_crop[:, :, 1], arr_crop[:, :, 2]
-        dist_white = np.maximum(np.maximum(255 - r, 255 - g), 255 - b)
-        alpha = np.clip((dist_white - 10) / 30.0 * 255.0, 0, 255).astype(np.uint8)
-        arr_crop[:, :, 3] = alpha
-        logo_trans = Image.fromarray(arr_crop, "RGBA")
-        logo_trans.save("pdf_logo_trans.png")
-    elif os.path.exists("pdf_logo_trans.png"):
-        logo_trans = Image.open("pdf_logo_trans.png").convert("RGBA")
-    else:
-        logo_trans = fg_clean
-
-    # Create 24k Gold-Rimmed Circular Center Badge for QR Codes
-    size = 800
-    badge = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    bdraw = ImageDraw.Draw(badge)
-    bdraw.ellipse([6, 6, size - 7, size - 7], fill=(255, 255, 255, 255))
+    if src_path:
+        logo_trans = extract_official_logo(src_path)
 
     if logo_trans is not None:
-        target_w = int(size * 0.82)
+        logo_trans.save("awadh_title.png")
+        print("[OK] Generated awadh_title.png (Official Awadh Fine Dine Restaurant Transparent Logo)")
+
+        # Create 24k Gold-Rimmed Circular Center Badge for QR Codes (Luxury Obsidian Dark Theme)
+        size = 800
+        badge = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+        bdraw = ImageDraw.Draw(badge)
+        bdraw.ellipse([8, 8, size - 9, size - 9], fill=(12, 16, 26, 255))
+
+        target_w = int(size * 0.84)
         target_h = int(logo_trans.height * (target_w / logo_trans.width))
         logo_res = logo_trans.resize((target_w, target_h), Image.Resampling.LANCZOS)
         cx = (size - target_w) // 2
         cy = (size - target_h) // 2
         badge.paste(logo_res, (cx, cy), mask=logo_res)
 
-    # Draw 24k gold rims on top
-    bdraw.ellipse([6, 6, size - 7, size - 7], outline=(212, 175, 55, 255), width=12)
-    bdraw.ellipse([18, 18, size - 19, size - 19], outline=(249, 226, 156, 200), width=3)
+        # 24k Gold outer double-rim
+        bdraw.ellipse([8, 8, size - 9, size - 9], outline=(212, 175, 55, 255), width=16)
+        bdraw.ellipse([22, 22, size - 23, size - 23], outline=(249, 226, 156, 190), width=4)
 
-    circle_mask = Image.new("L", (size, size), 0)
-    cdraw = ImageDraw.Draw(circle_mask)
-    cdraw.ellipse([6, 6, size - 7, size - 7], fill=255)
+        circle_mask = Image.new("L", (size, size), 0)
+        cdraw = ImageDraw.Draw(circle_mask)
+        cdraw.ellipse([8, 8, size - 9, size - 9], fill=255)
 
-    final_badge = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    final_badge.paste(badge, (0, 0), mask=circle_mask)
-    final_badge.save("logo_with_gold_rim.png")
-    final_badge.save("logo_qr_center.png")
-    final_badge.save("logo.png")
-    print("[OK] Generated logo_qr_center.png & logo_with_gold_rim.png (from attached PDF)")
+        final_badge = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+        final_badge.paste(badge, (0, 0), mask=circle_mask)
+        final_badge.save("logo_with_gold_rim.png")
+        final_badge.save("logo_qr_center.png")
+        final_badge.save("logo.png")
+        print("[OK] Generated logo_qr_center.png & logo_with_gold_rim.png")
 
     # 3. Generate Curated High-Contrast Ambience Photos from the 4 Uploaded Restaurant Photos
     # ambience_1.jpg: Iconic Warm Wood Facade & 3D 'अवध' Bow-and-Arrow Sign (from source_facade.png)
@@ -621,7 +624,7 @@ def generate_styled_qr(url, target_size=680):
         draw.ellipse(
             [cx_px - logo_px // 2 - pad_ring, cy_px - logo_px // 2 - pad_ring,
              cx_px + logo_px // 2 + pad_ring, cy_px + logo_px // 2 + pad_ring],
-            fill=(255, 255, 255, 255),
+            fill=(12, 16, 26, 255),
             outline=(212, 175, 55, 255),
             width=max(3, cell // 6)
         )
@@ -639,59 +642,68 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
     if config is None:
         config = {}
 
+    # 1. Pure Veg Badge on Upper-Right Side ("right m upar side")
+    badge_w = 175
+    badge_h = 38
+    bx = w - 82 - badge_w
+    by = 44
+    draw.rounded_rectangle([bx, by, bx + badge_w, by + badge_h], radius=19, fill=(10, 16, 26, 230), outline=(34, 197, 94, 220), width=2)
+
+    # Official Green Vegetarian Sign (FSSAI box + circle)
+    box_size = 20
+    box_x = bx + 12
+    box_y = by + (badge_h - box_size) // 2
+    draw.rounded_rectangle([box_x, box_y, box_x + box_size, box_y + box_size], radius=3, fill=(255, 255, 255), outline=(34, 197, 94), width=2)
+    dot_r = 4.5
+    draw.ellipse([box_x + box_size/2 - dot_r, box_y + box_size/2 - dot_r, box_x + box_size/2 + dot_r, box_y + box_size/2 + dot_r], fill=(22, 163, 74))
+
+    # "PURE VEG" text
+    font_veg = get_font(18, bold=True)
+    draw.text((box_x + box_size + 9, by + 8), "PURE VEG", fill=(74, 222, 128), font=font_veg)
+
+    # 2. Main Logo (Transparent 'अवध' + Bow & Arrow + 'Fine Dine Restaurant')
     title_path = "awadh_title.png"
     if os.path.exists(title_path):
         title_img = Image.open(title_path).convert("RGBA")
-        target_w = 460
+        target_w = 520
         target_h = int(title_img.size[1] * (target_w / title_img.size[0]))
-        if target_h > 215:
-            target_h = 215
+        if target_h > 240:
+            target_h = 240
             target_w = int(title_img.size[0] * (target_h / title_img.size[1]))
         title_img = title_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
 
-        veg_size = 36
-        gap = 16
-        total_w = target_w + gap + veg_size
-        hx = int((w - total_w) / 2)
-        hy = 92
+        hx = int((w - target_w) / 2)
+        hy = 74
         canvas.paste(title_img, (hx, hy), mask=title_img)
-
-        # Draw green pure veg mark beside logo
-        vx = hx + target_w + gap
-        vy = hy + (target_h - veg_size) // 2
-        draw.rounded_rectangle([vx, vy, vx + veg_size, vy + veg_size], radius=6, fill=(255, 255, 255), outline=(34, 197, 94), width=3)
-        vr = 8
-        vcx, vcy = vx + veg_size // 2, vy + veg_size // 2
-        draw.ellipse([vcx - vr, vcy - vr, vcx + vr, vcy + vr], fill=(22, 163, 74))
 
     raw_sub = config.get("subname", "AWADH RESTAURANT").strip().upper()
     midway_text = "   ".join([" ".join(list(word)) for word in raw_sub.split()])
-    font_size_sub = 28
+    font_size_sub = 24
     font_midway = get_font(font_size_sub, bold=True)
     bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
     if (bbox[2] - bbox[0]) > (w - 140):
         midway_text = "  ".join([" ".join(list(word)) for word in raw_sub.split()])
         bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
-    while (bbox[2] - bbox[0]) > (w - 140) and font_size_sub > 18:
+    while (bbox[2] - bbox[0]) > (w - 140) and font_size_sub > 16:
         font_size_sub -= 1
         font_midway = get_font(font_size_sub, bold=True)
         bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
     if (bbox[2] - bbox[0]) > (w - 140):
         midway_text = raw_sub
         bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
-    draw.text(((w - (bbox[2] - bbox[0])) / 2, 330), midway_text, fill=(247, 223, 148), font=font_midway)
+    draw.text(((w - (bbox[2] - bbox[0])) / 2, 328), midway_text, fill=(247, 223, 148), font=font_midway)
 
     sub_text = config.get("tagline", "100% PURE VEG  •  ROYAL FAMILY DINING  •  RAU, INDORE")
-    font_size_tag = 19
+    font_size_tag = 18
     font_sub = get_font(font_size_tag, bold=True)
     bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
     while (bbox[2] - bbox[0]) > (w - 140) and font_size_tag > 13:
         font_size_tag -= 1
         font_sub = get_font(font_size_tag, bold=True)
         bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
-    draw.text(((w - (bbox[2] - bbox[0])) / 2, 380), sub_text, fill=(255, 255, 255), font=font_sub)
+    draw.text(((w - (bbox[2] - bbox[0])) / 2, 368), sub_text, fill=(255, 255, 255), font=font_sub)
 
-    div_y = 430
+    div_y = 415
     draw.line([200, div_y, w - 200, div_y], fill=(212, 175, 55), width=2)
     draw.polygon([(w // 2, div_y - 7), (w // 2 + 7, div_y), (w // 2, div_y + 7), (w // 2 - 7, div_y)], fill=(247, 223, 148))
 
@@ -1239,13 +1251,8 @@ def sync_html_files(config, config_path="config.js"):
 
 
 def main():
-    assets_ready = all(os.path.exists(f) for f in [
-        "awadh_title.png", "logo_with_gold_rim.png", "logo.png",
-        "ambience_1.jpg", "ambience_2.jpg", "ambience_3.jpg", "ambience_4.jpg"
-    ])
-    if not assets_ready:
-        print("Preparing Awadh Fine Dine Restaurant brand logos and architectural photos...")
-        prepare_brand_assets()
+    print("Preparing Awadh Fine Dine Restaurant brand logos and architectural photos...")
+    prepare_brand_assets()
 
     config = load_config("config.js")
     sync_html_files(config, "config.js")

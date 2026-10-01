@@ -141,40 +141,68 @@
             z-index: 3;
         }
 
-        .standee-logo-container {
-            display: flex;
+        .standee-pure-veg-badge {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            z-index: 10;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 4px;
-            margin-bottom: 3px;
+            gap: 6px;
+            background: rgba(10, 15, 26, 0.85);
+            border: 1.2px solid rgba(34, 197, 94, 0.55);
+            padding: 3.5px 9px 3.5px 7px;
+            border-radius: 20px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 8px rgba(34, 197, 94, 0.22);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            user-select: none;
         }
 
-        .standee-hindi-title {
-            width: 210px;
-            height: auto;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
-        }
-
-        .pure-veg-mark-standee {
-            width: 18px;
-            height: 18px;
-            border: 1.8px solid #22c55e;
+        .pure-veg-mark-box {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #22c55e;
             border-radius: 3px;
             background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
             flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
-        .pure-veg-mark-standee::after {
-            content: '';
-            width: 8px;
-            height: 8px;
+        .pure-veg-mark-circle {
+            width: 6.5px;
+            height: 6.5px;
             border-radius: 50%;
             background: #16a34a;
+            display: block;
+        }
+
+        .pure-veg-top-text {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #4ade80;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .standee-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 4px;
+            margin-bottom: 2px;
+            width: 100%;
+        }
+
+        .standee-hindi-title {
+            width: 250px;
+            max-width: 88%;
+            height: auto;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85));
         }
 
         .standee-subname {
@@ -422,9 +450,15 @@
 
         <!-- Header -->
         <div class="standee-header">
+            <!-- Official Pure Veg Badge on Upper-Right Side ("right m upar side") -->
+            <div class="standee-pure-veg-badge" title="100% Pure Vegetarian">
+                <span class="pure-veg-mark-box">
+                    <span class="pure-veg-mark-circle"></span>
+                </span>
+                <span class="pure-veg-top-text">PURE VEG</span>
+            </div>
             <div class="standee-logo-container">
-                <img src="awadh_title.png?v=1" alt="Awadh Restaurant" class="standee-hindi-title" id="stHindiTitle">
-                <div class="pure-veg-mark-standee" title="100% Pure Vegetarian"></div>
+                <img src="awadh_title.png?v=2" alt="Awadh Restaurant" class="standee-hindi-title" id="stHindiTitle">
             </div>
             <div class="standee-subname" id="stSubname">AWADH RESTAURANT</div>
             <div class="standee-location" id="stTagline">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</div>
@@ -490,7 +524,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=5cbe9954"></script>
+    <script src="config.js?v=bca44c53"></script>
     <script>
         function applyStandeeConfig(cfg) {
             if (!cfg) return;
