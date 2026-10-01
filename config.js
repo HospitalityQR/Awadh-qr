@@ -10,7 +10,7 @@ window.RESTAURANT_CONFIG = {
     subname: "AWADH FINE DINE RESTAURANT",
     hindiTitleUrl: "awadh_title.png?v=1",
     tagline: "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE",
-    highlight: "100% Pure Vegetarian • Royal Awadhi & North Indian Delicacies • Grand Ambience",
+    highlight: "Royal Awadhi & North Indian Delicacies • Grand Ambience",
 
     // Primary Address & Location Details
     addressPrimaryLabel: "LOCATION",

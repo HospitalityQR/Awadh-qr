@@ -724,9 +724,6 @@ def draw_footer(canvas, draw, config, w=1200):
         outline=(247, 223, 148, 90),
         width=1
     )
-    div_y = info_y1 + 60
-    gdraw.line([info_x1 + 90, div_y, info_x2 - 90, div_y], fill=(212, 175, 55, 115), width=1)
-
     gdraw.rounded_rectangle(
         [info_x1 + 135, info_y1 + 124, info_x2 - 135, info_y2 - 16],
         radius=14,
@@ -738,31 +735,9 @@ def draw_footer(canvas, draw, config, w=1200):
     canvas_rgba = Image.alpha_composite(canvas_rgba, glass)
     canvas.paste(canvas_rgba.convert("RGB"))
 
-    lbl1 = "100% PURE VEG :  "
-    txt1 = config.get("highlight", "Royal Awadhi, North Indian & Global Fine Dining")
-    f_size1 = 21
-    font_label1 = get_font(f_size1, bold=True)
-    font_addr1 = get_font(f_size1, bold=True)
-    b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label1)
-    b_txt1 = draw.textbbox((0, 0), txt1, font=font_addr1)
-    while ((b_lbl1[2] - b_lbl1[0]) + (b_txt1[2] - b_txt1[0])) > (w - 230) and f_size1 > 14:
-        f_size1 -= 1
-        font_label1 = get_font(f_size1, bold=True)
-        font_addr1 = get_font(f_size1, bold=True)
-        b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label1)
-        b_txt1 = draw.textbbox((0, 0), txt1, font=font_addr1)
-    w1_lbl = b_lbl1[2] - b_lbl1[0]
-    w1_txt = b_txt1[2] - b_txt1[0]
-    total_w1 = w1_lbl + w1_txt
-    x1_start = (w - total_w1) / 2
-    y1_row = info_y1 + 19 + (21 - f_size1) // 2
-    draw_sparkle(draw, x1_start - 20, y1_row + 10, radius=7, color=(249, 226, 156))
-    draw.text((x1_start, y1_row), lbl1, fill=(249, 226, 156), font=font_label1)
-    draw.text((x1_start + w1_lbl, y1_row), txt1, fill=(255, 255, 255), font=font_addr1)
-
     lbl2 = f"{config.get('addressPrimaryLabel', 'LOCATION')} :  "
     txt2 = config.get("addressPrimary", "NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
-    f_size2 = 21
+    f_size2 = 23
     font_label2 = get_font(f_size2, bold=True)
     font_addr2 = get_font(f_size2, bold=True)
     b_lbl2 = draw.textbbox((0, 0), lbl2, font=font_label2)
@@ -777,10 +752,11 @@ def draw_footer(canvas, draw, config, w=1200):
     w2_txt = b_txt2[2] - b_txt2[0]
     total_w2 = w2_lbl + w2_txt
     x2_start = (w - total_w2) / 2
-    y2_row = info_y1 + 75 + (21 - f_size2) // 2
-    draw_sparkle(draw, x2_start - 20, y2_row + 10, radius=7, color=(249, 226, 156))
+    y2_row = info_y1 + 48
+    draw_sparkle(draw, x2_start - 24, y2_row + 12, radius=8, color=(249, 226, 156))
     draw.text((x2_start, y2_row), lbl2, fill=(249, 226, 156), font=font_label2)
     draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr2)
+    draw_sparkle(draw, x2_start + total_w2 + 24, y2_row + 12, radius=8, color=(249, 226, 156))
 
     phone_disp = config.get("phoneDisplay") or config.get("phone", "90351 70841")
     wa_disp = config.get("whatsappDisplay") or config.get("whatsapp", "98265 98289")
@@ -1170,7 +1146,6 @@ def sync_html_files(config, config_path="config.js"):
         html = re.sub(r'(<title id="pageTitle">).*?(</title>)', lambda m: f"{m.group(1)}{name} | Rate Us on Google & Follow Us on Instagram{m.group(2)}", html)
         html = re.sub(r'(<div class="brand-subname" id="uiSubname">).*?(</div>)', lambda m: f"{m.group(1)}{subname}{m.group(2)}", html)
         html = re.sub(r'(<span id="uiTagline">).*?(</span>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", html)
-        html = re.sub(r'(<div class="address-line" id="uiHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiAddressPrimary">).*?(</div>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", html)
         html = re.sub(r'(<a href="tel:)[^"]*(" class="contact-btn call-btn" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
         html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call: {phone_disp}{m.group(2)}", html)
@@ -1194,7 +1169,6 @@ def sync_html_files(config, config_path="config.js"):
             shtml = f.read()
         shtml = re.sub(r'(<div class="standee-subname" id="stSubname">).*?(</div>)', lambda m: f"{m.group(1)}{subname}{m.group(2)}", shtml)
         shtml = re.sub(r'(<div class="standee-location" id="stTagline">).*?(</div>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", shtml)
-        shtml = re.sub(r'(<span id="stHighlight">).*?(</span>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", shtml)
         shtml = re.sub(r'(<span id="stAddress">).*?(</span>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", shtml)
         shtml = re.sub(r'(<div class="standee-phone" id="stPhone">).*?(</div>)', lambda m: f"{m.group(1)}Call: {phone_disp} &nbsp;•&nbsp; WhatsApp: {wa_short}{m.group(2)}", shtml)
         shtml = re.sub(r'(<div class="dual-qr-foot" id="stInstaFoot">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle.upper()}{m.group(2)}", shtml)
