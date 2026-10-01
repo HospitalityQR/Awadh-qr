@@ -699,7 +699,7 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
     draw.polygon([(w // 2, div_y - 7), (w // 2 + 7, div_y), (w // 2, div_y + 7), (w // 2 - 7, div_y)], fill=(247, 223, 148))
 
 
-def draw_footer(canvas, draw, config, w=1200):
+def draw_footer(canvas, draw, config, w=1200, is_landing=False):
     """
     Draw the Ultra-Luxury Address & Phone Box + Gold Sparkle Thank-You Footer.
     """
@@ -784,12 +784,15 @@ def draw_footer(canvas, draw, config, w=1200):
     draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr2)
 
     phone_disp = config.get("phoneDisplay") or config.get("phone", "90351 70841")
-    wa_disp = config.get("whatsappDisplay") or config.get("whatsapp", "98265 98289")
-    wa_short = re.sub(r"^\+91\s*", "", wa_disp)
-    if wa_short and wa_short != phone_disp:
-        phone_text = f"Call: {phone_disp}   •   WhatsApp: {wa_short}"
-    else:
+    if is_landing:
         phone_text = f"Call / Reservation: {phone_disp}"
+    else:
+        wa_disp = config.get("whatsappDisplay") or config.get("whatsapp", "98265 98289")
+        wa_short = re.sub(r"^\+91\s*", "", wa_disp)
+        if wa_short and wa_short != phone_disp:
+            phone_text = f"Call: {phone_disp}   •   WhatsApp: {wa_short}"
+        else:
+            phone_text = f"Call / Reservation: {phone_disp}"
     f_size_p = 27
     font_phone = get_font(f_size_p, bold=True)
     bbox = draw.textbbox((0, 0), phone_text, font=font_phone)
@@ -1132,7 +1135,7 @@ def build_mobile_landing_preview(config, bg_img, output_filename="mobile_landing
             canvas.paste(im, (tx, t_y))
             draw.rounded_rectangle([tx, t_y, tx + thumb_w, t_y + thumb_h], radius=16, outline=(212, 175, 55), width=3)
 
-    draw_footer(canvas, draw, config, w)
+    draw_footer(canvas, draw, config, w, is_landing=True)
     canvas.save(output_filename, quality=95)
     print(f"[OK] Generated {output_filename}")
 
@@ -1174,12 +1177,10 @@ def sync_html_files(config, config_path="config.js"):
         html = re.sub(r'(<span id="uiTagline">).*?(</span>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{clean_highlight}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiAddressPrimary">).*?(</div>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", html)
-        html = re.sub(r'(<a href="tel:)[^"]*(" class="contact-btn call-btn" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
-        html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call: {phone_disp}{m.group(2)}", html)
+        html = re.sub(r'(<a href="tel:)[^"]*(" class="phone-link" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
+        html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", html)
         html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="action-card whatsapp-card" id="whatsappCard">)', lambda m: f"{m.group(1)}{wa_url}{m.group(2)}", html)
         html = re.sub(r'(<div class="whatsapp-number" id="uiWhatsappDisplay">).*?(</div>)', lambda m: f"{m.group(1)}{wa_disp}{m.group(2)}", html)
-        html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp-btn" id="uiWhatsappLink">)', lambda m: f"{m.group(1)}{wa_url}{m.group(2)}", html)
-        html = re.sub(r'(<span id="uiWhatsappText">).*?(</span>)', lambda m: f"{m.group(1)}WhatsApp: {wa_short}{m.group(2)}", html)
         html = re.sub(r'(<div class="insta-handle" id="uiInstaHandle">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle}{m.group(2)}", html)
         if g_url:
             html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="action-card primary-card" id="googleCard">)', lambda m: f"{m.group(1)}{g_url}{m.group(2)}", html)

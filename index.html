@@ -562,58 +562,33 @@
             line-height: 1.35;
         }
 
-        .contact-buttons-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            margin-top: 4px;
-        }
-
-        .contact-btn {
-            flex: 1;
+        .phone-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
-            padding: 9px 10px;
-            border-radius: 12px;
-            font-size: 13.5px;
+            gap: 8px;
+            width: 96%;
+            color: var(--gold-light);
+            font-size: 15.5px;
             font-weight: 800;
             text-decoration: none;
-            letter-spacing: 0.3px;
-            transition: all 0.22s ease;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-            white-space: nowrap;
-        }
-
-        .call-btn {
+            letter-spacing: 0.5px;
+            padding: 9px 18px;
+            margin-top: 3px;
+            border-radius: 12px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.22) 0%, rgba(240, 101, 19, 0.18) 100%);
             border: 1.5px solid rgba(249, 226, 156, 0.75);
-            color: var(--gold-light);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            transition: all 0.22s ease;
         }
 
-        .call-btn:hover {
+        .phone-link:hover {
             background: var(--gold-gradient);
             color: #090d16;
             transform: translateY(-1px);
         }
 
-        .whatsapp-btn {
-            background: linear-gradient(135deg, rgba(37, 211, 102, 0.2) 0%, rgba(18, 140, 126, 0.26) 100%);
-            border: 1.5px solid rgba(37, 211, 102, 0.75);
-            color: #72f5b8;
-        }
-
-        .whatsapp-btn:hover {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
-        }
-
-        .contact-btn svg {
+        .phone-link svg {
             width: 16px;
             height: 16px;
             fill: currentColor;
@@ -816,18 +791,10 @@
                     <div class="address-line" id="uiAddressPrimary">NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</div>
                 </div>
             </div>
-            <div class="contact-buttons-row">
-                <a href="tel:9035170841" class="contact-btn call-btn" id="uiPhoneLink">
-                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                    <span id="uiPhoneText">Call: 90351 70841</span>
-                </a>
-                <a href="https://wa.me/919826598289?text=Namaste%20Awadh%20Restaurant%2C%20I%20would%20like%20to%20connect%20for%20table%20reservation%20%2F%20inquiry." target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp-btn" id="uiWhatsappLink">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.71 4.3 3.8.6.26 1.07.41 1.44.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.12-.22-.19-.47-.32z"/>
-                    </svg>
-                    <span id="uiWhatsappText">WhatsApp: 98265 98289</span>
-                </a>
-            </div>
+            <a href="tel:9035170841" class="phone-link" id="uiPhoneLink">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <span id="uiPhoneText">Call / Reservation: 90351 70841</span>
+            </a>
         </div>
 
         <!-- 6. Sparkle Footer -->
@@ -888,13 +855,11 @@
                 const pLink = document.getElementById('uiPhoneLink');
                 const pText = document.getElementById('uiPhoneText');
                 if (pLink) pLink.href = 'tel:' + cfg.phone.replace(/\s+/g, '');
-                if (pText) pText.textContent = 'Call: ' + (cfg.phoneDisplay || cfg.phone);
+                if (pText) pText.textContent = 'Call / Reservation: ' + (cfg.phoneDisplay || cfg.phone);
             }
             if (cfg.whatsapp || cfg.whatsappUrl) {
                 const waCard = document.getElementById('whatsappCard');
                 const waDisp = document.getElementById('uiWhatsappDisplay');
-                const waLink = document.getElementById('uiWhatsappLink');
-                const waText = document.getElementById('uiWhatsappText');
 
                 const waClean = cfg.whatsapp ? cfg.whatsapp.replace(/\D/g, '') : '9826598289';
                 const waUrl = cfg.whatsappUrl || ('https://wa.me/91' + waClean + '?text=Namaste%20Awadh%20Restaurant%2C%20I%20would%20like%20to%20connect%20for%20table%20reservation%20%2F%20inquiry.');
@@ -902,8 +867,6 @@
 
                 if (waCard) waCard.href = waUrl;
                 if (waDisp) waDisp.textContent = waDisplayStr;
-                if (waLink) waLink.href = waUrl;
-                if (waText) waText.textContent = 'WhatsApp: ' + (cfg.whatsappDisplay || cfg.whatsapp || '98265 98289');
             }
             if (cfg.logoUrl) {
                 const logoEl = document.getElementById('uiLogo');
