@@ -642,24 +642,28 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
     if config is None:
         config = {}
 
-    # 1. Pure Veg Badge on Upper-Right Side ("right m upar side")
-    badge_w = 175
-    badge_h = 38
-    bx = w - 82 - badge_w
-    by = 44
-    draw.rounded_rectangle([bx, by, bx + badge_w, by + badge_h], radius=19, fill=(10, 16, 26, 230), outline=(34, 197, 94, 220), width=2)
+    # 1. Pure Veg Badge on Left Side, slightly lower with text underneath ("left mai thoda neeche side aur sign ke neeche pure veg")
+    badge_w = 84
+    badge_h = 60
+    bx = 84
+    by = 68
+    draw.rounded_rectangle([bx, by, bx + badge_w, by + badge_h], radius=10, fill=(10, 16, 26, 230), outline=(34, 197, 94, 220), width=2)
 
-    # Official Green Vegetarian Sign (FSSAI box + circle)
-    box_size = 20
-    box_x = bx + 12
-    box_y = by + (badge_h - box_size) // 2
-    draw.rounded_rectangle([box_x, box_y, box_x + box_size, box_y + box_size], radius=3, fill=(255, 255, 255), outline=(34, 197, 94), width=2)
-    dot_r = 4.5
+    # Official Green Vegetarian Sign (FSSAI box + circle on top)
+    box_size = 22
+    box_x = bx + (badge_w - box_size) // 2
+    box_y = by + 7
+    draw.rounded_rectangle([box_x, box_y, box_x + box_size, box_y + box_size], radius=4, fill=(255, 255, 255), outline=(34, 197, 94), width=2)
+    dot_r = 5.5
     draw.ellipse([box_x + box_size/2 - dot_r, box_y + box_size/2 - dot_r, box_x + box_size/2 + dot_r, box_y + box_size/2 + dot_r], fill=(22, 163, 74))
 
-    # "PURE VEG" text
-    font_veg = get_font(18, bold=True)
-    draw.text((box_x + box_size + 9, by + 8), "PURE VEG", fill=(74, 222, 128), font=font_veg)
+    # "PURE VEG" text rendered directly under the sign
+    font_veg = get_font(12, bold=True)
+    bbox = draw.textbbox((0, 0), "PURE VEG", font=font_veg)
+    tw = bbox[2] - bbox[0]
+    tx = bx + (badge_w - tw) // 2
+    ty = box_y + box_size + 5
+    draw.text((tx, ty), "PURE VEG", fill=(74, 222, 128), font=font_veg)
 
     # 2. Main Logo (Transparent 'अवध' + Bow & Arrow + 'Fine Dine Restaurant')
     title_path = "awadh_title.png"
