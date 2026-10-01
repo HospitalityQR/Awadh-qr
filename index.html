@@ -808,7 +808,11 @@
         <div class="info-box">
             <div class="outlets-list">
                 <div class="outlet-item">
-                    <span class="outlet-badge">✦ LOCATION • RAU, AB ROAD, INDORE ✦</span>
+                    <span class="outlet-badge">✦ 100% PURE VEG • FINE DINE RESTAURANT ✦</span>
+                    <div class="address-line" id="uiHighlight">Royal Awadhi & North Indian Delicacies • Grand Ambience</div>
+                </div>
+                <div class="outlet-item">
+                    <span class="outlet-badge">✦ RAU, AB ROAD • INDORE ✦</span>
                     <div class="address-line" id="uiAddressPrimary">NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</div>
                 </div>
             </div>
@@ -873,7 +877,8 @@
             }
             if (cfg.highlight) {
                 const hlEl = document.getElementById('uiHighlight');
-                if (hlEl) hlEl.textContent = cfg.highlight;
+                const cleanHl = cfg.highlight.replace(/^\s*100%\s*pure\s*veg(etarian)?\s*[\:\•\-\–\—\.]*\s*/i, '');
+                if (hlEl) hlEl.textContent = cleanHl;
             }
             if (cfg.addressPrimary) {
                 const addr1 = document.getElementById('uiAddressPrimary');

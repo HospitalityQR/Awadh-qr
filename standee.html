@@ -456,6 +456,8 @@
         <!-- Footer -->
         <div class="standee-footer">
             <div class="standee-info-box">
+                <div class="standee-addr"><strong>✦ 100% PURE VEG:</strong> <span id="stHighlight">Royal Awadhi & North Indian Delicacies • Grand Ambience</span></div>
+                <div class="standee-addr-divider"></div>
                 <div class="standee-addr"><strong>✦ LOCATION:</strong> <span id="stAddress">NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</span></div>
                 <div class="standee-phone" id="stPhone">Call: 90351 70841 &nbsp;•&nbsp; WhatsApp: 98265 98289</div>
             </div>
@@ -473,7 +475,10 @@
             if (!cfg) return;
             if (cfg.subname) document.getElementById('stSubname').textContent = cfg.subname;
             if (cfg.tagline) document.getElementById('stTagline').textContent = cfg.tagline;
-            if (cfg.highlight) document.getElementById('stHighlight').textContent = cfg.highlight;
+            if (cfg.highlight) {
+                const cleanHl = cfg.highlight.replace(/^\s*100%\s*pure\s*veg(etarian)?\s*[\:\•\-\–\—\.]*\s*/i, '');
+                document.getElementById('stHighlight').textContent = cleanHl;
+            }
             if (cfg.addressPrimary) document.getElementById('stAddress').textContent = cfg.addressPrimary;
             if (cfg.phone || cfg.whatsapp) {
                 const phoneStr = cfg.phoneDisplay || cfg.phone || "90351 70841";
