@@ -345,15 +345,16 @@
         }
 
         .standee-phone {
-            font-size: 13.5px;
+            font-size: 11px;
             font-weight: 800;
             color: var(--gold-light);
-            letter-spacing: 0.4px;
-            padding: 3px 16px;
+            letter-spacing: 0.3px;
+            padding: 3px 12px;
             margin-top: 2px;
             border-radius: 8px;
             background: rgba(212, 175, 55, 0.16);
             border: 1px solid rgba(249, 226, 156, 0.6);
+            white-space: nowrap;
         }
 
         .standee-thanks {
@@ -458,7 +459,7 @@
                 <div class="standee-addr"><strong>✦ 100% PURE VEG:</strong> <span id="stHighlight">100% Pure Vegetarian • Royal Awadhi & North Indian Delicacies • Grand Ambience</span></div>
                 <div class="standee-addr-divider"></div>
                 <div class="standee-addr"><strong>✦ LOCATION:</strong> <span id="stAddress">NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</span></div>
-                <div class="standee-phone" id="stPhone">Call / Reservation: 90351 70841</div>
+                <div class="standee-phone" id="stPhone">Call: 90351 70841 &nbsp;•&nbsp; WhatsApp: 98265 98289</div>
             </div>
             <div class="standee-thanks">
                 <span>✦</span>
@@ -468,7 +469,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=f268d9a4"></script>
+    <script src="config.js?v=c2ee3a37"></script>
     <script>
         function applyStandeeConfig(cfg) {
             if (!cfg) return;
@@ -476,8 +477,10 @@
             if (cfg.tagline) document.getElementById('stTagline').textContent = cfg.tagline;
             if (cfg.highlight) document.getElementById('stHighlight').textContent = cfg.highlight;
             if (cfg.addressPrimary) document.getElementById('stAddress').textContent = cfg.addressPrimary;
-            if (cfg.phoneDisplay || cfg.phone) {
-                document.getElementById('stPhone').textContent = 'Call / Reservation: ' + (cfg.phoneDisplay || cfg.phone);
+            if (cfg.phone || cfg.whatsapp) {
+                const phoneStr = cfg.phoneDisplay || cfg.phone || "90351 70841";
+                const waStr = cfg.whatsappDisplay || cfg.whatsapp || "98265 98289";
+                document.getElementById('stPhone').innerHTML = 'Call: ' + phoneStr + ' &nbsp;•&nbsp; WhatsApp: ' + waStr;
             }
             if (cfg.instagramHandle) {
                 document.getElementById('stInstaFoot').textContent = cfg.instagramHandle.toUpperCase();

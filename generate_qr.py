@@ -512,6 +512,19 @@ def draw_instagram_icon(draw, cx, cy, size=26):
     draw.ellipse([cx + half - 7, cy - half + 4, cx + half - 4, cy - half + 7], fill=(255, 255, 255))
 
 
+def draw_whatsapp_icon(draw, cx, cy, size=26):
+    """Draw a clean WhatsApp chat bubble & phone glyph."""
+    half = size // 2
+    draw.ellipse([cx - half, cy - half, cx + half, cy + half], fill=(37, 211, 102), outline=(255, 255, 255), width=max(1, size // 16))
+    tail = [(cx - int(half * 0.35), cy + int(half * 0.4)), (cx - int(half * 0.8), cy + int(half * 0.85)), (cx - int(half * 0.05), cy + int(half * 0.65))]
+    draw.polygon(tail, fill=(37, 211, 102))
+    hw = max(2, int(size * 0.12))
+    r_phone = int(half * 0.55)
+    draw.arc([cx - r_phone, cy - r_phone, cx + r_phone, cy + r_phone], start=100, end=260, fill=(255, 255, 255), width=hw)
+    draw.ellipse([cx - int(half * 0.45), cy - int(half * 0.45), cx - int(half * 0.15), cy - int(half * 0.15)], fill=(255, 255, 255))
+    draw.ellipse([cx - int(half * 0.45), cy + int(half * 0.15), cx - int(half * 0.15), cy + int(half * 0.45)], fill=(255, 255, 255))
+
+
 _QR_CACHE = {}
 
 
@@ -770,9 +783,20 @@ def draw_footer(canvas, draw, config, w=1200):
     draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr2)
 
     phone_disp = config.get("phoneDisplay") or config.get("phone", "90351 70841")
-    phone_text = f"Call / Reservation: {phone_disp}"
+    wa_disp = config.get("whatsappDisplay") or config.get("whatsapp", "98265 98289")
+    wa_short = re.sub(r"^\+91\s*", "", wa_disp)
+    if wa_short and wa_short != phone_disp:
+        phone_text = f"Call: {phone_disp}   •   WhatsApp: {wa_short}"
+    else:
+        phone_text = f"Call / Reservation: {phone_disp}"
+    f_size_p = 27
+    font_phone = get_font(f_size_p, bold=True)
     bbox = draw.textbbox((0, 0), phone_text, font=font_phone)
-    draw.text(((w - (bbox[2] - bbox[0])) / 2, info_y1 + 139), phone_text, fill=(250, 228, 152), font=font_phone)
+    while (bbox[2] - bbox[0]) > (w - 300) and f_size_p > 16:
+        f_size_p -= 1
+        font_phone = get_font(f_size_p, bold=True)
+        bbox = draw.textbbox((0, 0), phone_text, font=font_phone)
+    draw.text(((w - (bbox[2] - bbox[0])) / 2, info_y1 + 138), phone_text, fill=(250, 228, 152), font=font_phone)
 
     thanks_text = "Thank you for dining with us!"
     bbox = draw.textbbox((0, 0), thanks_text, font=font_thanks)
@@ -1024,37 +1048,56 @@ def build_mobile_landing_preview(config, bg_img, output_filename="mobile_landing
 
     glass = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     gdraw = ImageDraw.Draw(glass)
-    c1_y1, c1_y2 = 496, 702
-    c2_y1, c2_y2 = 738, 944
+    c1_y1, c1_y2 = 472, 620
+    c2_y1, c2_y2 = 636, 784
+    c3_y1, c3_y2 = 800, 948
     gdraw.rounded_rectangle([115, c1_y1, w - 115, c1_y2], radius=24, fill=(18, 22, 34, 236), outline=(247, 223, 148, 255), width=3)
     gdraw.rounded_rectangle([115, c2_y1, w - 115, c2_y2], radius=24, fill=(10, 15, 26, 232), outline=(212, 175, 55, 230), width=2)
+    gdraw.rounded_rectangle([115, c3_y1, w - 115, c3_y2], radius=24, fill=(8, 18, 16, 232), outline=(37, 211, 102, 230), width=2)
     canvas.paste(Image.alpha_composite(canvas.convert("RGBA"), glass).convert("RGB"))
     draw = ImageDraw.Draw(canvas)
 
+    font_title_sm = get_font(28, bold=True)
+    font_desc_sm = get_font(21, bold=False)
+    font_tag_sm = get_font(20, bold=True)
+
     # Google Card Content
-    draw.rounded_rectangle([150, c1_y1 + 44, 265, c1_y1 + 159], radius=24, fill=(255, 255, 255), outline=(212, 175, 55), width=2)
-    draw_google_g_icon(draw, 207, c1_y1 + 101, radius=34)
-    draw.text((300, c1_y1 + 38), "Rate Us on Google", fill=(255, 255, 255), font=font_card_title)
-    draw.text((300, c1_y1 + 86), "Share your dining experience with us", fill=(203, 213, 225), font=font_card_desc)
-    draw_5_stars_row(draw, 310, c1_y1 + 143, star_radius=10, spacing=26, color=(251, 191, 36))
-    draw.text((445, c1_y1 + 131), "Tap to Review", fill=(247, 223, 148), font=font_card_tag)
-    ax1, ay1 = w - 183, c1_y1 + 103
-    draw.ellipse([ax1 - 32, ay1 - 32, ax1 + 32, ay1 + 32], fill=(212, 175, 55), outline=(247, 223, 148), width=2)
-    draw.line([ax1 - 12, ay1, ax1 + 10, ay1], fill=(9, 13, 24), width=3)
-    draw.line([ax1 + 2, ay1 - 9, ax1 + 11, ay1], fill=(9, 13, 24), width=3)
-    draw.line([ax1 + 2, ay1 + 9, ax1 + 11, ay1], fill=(9, 13, 24), width=3)
+    draw.rounded_rectangle([150, c1_y1 + 22, 254, c1_y1 + 126], radius=20, fill=(255, 255, 255), outline=(212, 175, 55), width=2)
+    draw_google_g_icon(draw, 202, c1_y1 + 74, radius=30)
+    draw.text((284, c1_y1 + 18), "Rate Us on Google", fill=(255, 255, 255), font=font_title_sm)
+    draw.text((284, c1_y1 + 58), "Share your dining experience with us", fill=(203, 213, 225), font=font_desc_sm)
+    draw_5_stars_row(draw, 292, c1_y1 + 104, star_radius=9, spacing=24, color=(251, 191, 36))
+    draw.text((420, c1_y1 + 93), "Tap to Review", fill=(247, 223, 148), font=font_tag_sm)
+    ax1, ay1 = w - 180, c1_y1 + 74
+    draw.ellipse([ax1 - 28, ay1 - 28, ax1 + 28, ay1 + 28], fill=(212, 175, 55), outline=(247, 223, 148), width=2)
+    draw.line([ax1 - 10, ay1, ax1 + 9, ay1], fill=(9, 13, 24), width=3)
+    draw.line([ax1 + 2, ay1 - 8, ax1 + 10, ay1], fill=(9, 13, 24), width=3)
+    draw.line([ax1 + 2, ay1 + 8, ax1 + 10, ay1], fill=(9, 13, 24), width=3)
 
     # Instagram Card Content
-    draw.rounded_rectangle([150, c2_y1 + 44, 265, c2_y1 + 159], radius=24, fill=(214, 41, 118), outline=(247, 223, 148), width=2)
-    draw_instagram_icon(draw, 207, c2_y1 + 101, size=64)
-    draw.text((300, c2_y1 + 38), "Follow Us on Instagram", fill=(255, 255, 255), font=font_card_title)
-    draw.text((300, c2_y1 + 86), "Explore royal delicacies, reels & fine dining vibes", fill=(203, 213, 225), font=font_card_desc)
-    draw.text((300, c2_y1 + 131), insta_handle, fill=(247, 223, 148), font=font_card_tag)
-    ax2, ay2 = w - 183, c2_y1 + 103
-    draw.ellipse([ax2 - 32, ay2 - 32, ax2 + 32, ay2 + 32], fill=(16, 24, 42), outline=(212, 175, 55), width=2)
-    draw.line([ax2 - 12, ay2, ax2 + 10, ay2], fill=(247, 223, 148), width=3)
-    draw.line([ax2 + 2, ay2 - 9, ax2 + 11, ay2], fill=(247, 223, 148), width=3)
-    draw.line([ax2 + 2, ay2 + 9, ax2 + 11, ay2], fill=(247, 223, 148), width=3)
+    draw.rounded_rectangle([150, c2_y1 + 22, 254, c2_y1 + 126], radius=20, fill=(214, 41, 118), outline=(247, 223, 148), width=2)
+    draw_instagram_icon(draw, 202, c2_y1 + 74, size=56)
+    draw.text((284, c2_y1 + 18), "Follow Us on Instagram", fill=(255, 255, 255), font=font_title_sm)
+    draw.text((284, c2_y1 + 58), "Explore royal delicacies, reels & fine dining vibes", fill=(203, 213, 225), font=font_desc_sm)
+    draw.text((284, c2_y1 + 93), insta_handle, fill=(247, 223, 148), font=font_tag_sm)
+    ax2, ay2 = w - 180, c2_y1 + 74
+    draw.ellipse([ax2 - 28, ay2 - 28, ax2 + 28, ay2 + 28], fill=(16, 24, 42), outline=(212, 175, 55), width=2)
+    draw.line([ax2 - 10, ay2, ax2 + 9, ay2], fill=(247, 223, 148), width=3)
+    draw.line([ax2 + 2, ay2 - 8, ax2 + 10, ay2], fill=(247, 223, 148), width=3)
+    draw.line([ax2 + 2, ay2 + 8, ax2 + 10, ay2], fill=(247, 223, 148), width=3)
+
+    # WhatsApp Card Content
+    wa_disp_str = config.get("whatsappDisplay") or ("+91 " + config.get("whatsapp", "98265 98289"))
+    draw.rounded_rectangle([150, c3_y1 + 22, 254, c3_y1 + 126], radius=20, fill=(37, 211, 102), outline=(247, 223, 148), width=2)
+    draw_whatsapp_icon(draw, 202, c3_y1 + 74, size=56)
+    draw.text((284, c3_y1 + 18), "Chat on WhatsApp", fill=(255, 255, 255), font=font_title_sm)
+    draw.text((284, c3_y1 + 58), "Table reservation, party bookings & inquiries", fill=(203, 213, 225), font=font_desc_sm)
+    draw.text((284, c3_y1 + 93), f"{wa_disp_str}  •  Instant Chat", fill=(114, 245, 184), font=font_tag_sm)
+    ax3, ay3 = w - 180, c3_y1 + 74
+    draw.ellipse([ax3 - 28, ay3 - 28, ax3 + 28, ay3 + 28], fill=(20, 60, 36), outline=(37, 211, 102), width=2)
+    draw.line([ax3 - 10, ay3, ax3 + 9, ay3], fill=(114, 245, 184), width=3)
+    draw.line([ax3 + 2, ay3 - 8, ax3 + 10, ay3], fill=(114, 245, 184), width=3)
+    draw.line([ax3 + 2, ay3 + 8, ax3 + 10, ay3], fill=(114, 245, 184), width=3)
 
     # Ambience Showcase Strip
     sec_label = "OUR ROYAL FINE DINE AMBIENCE  •  AWADH"
@@ -1111,6 +1154,11 @@ def sync_html_files(config, config_path="config.js"):
     phone = config.get("phone", "9035170841")
     clean_phone = re.sub(r"\s+", "", phone)
     phone_disp = config.get("phoneDisplay") or phone
+    whatsapp = config.get("whatsapp", "9826598289")
+    clean_wa = re.sub(r"\D", "", whatsapp)
+    wa_disp = config.get("whatsappDisplay") or ("+91 " + whatsapp)
+    wa_short = re.sub(r"^\+91\s*", "", wa_disp)
+    wa_url = config.get("whatsappUrl") or f"https://wa.me/91{clean_wa}?text=Namaste%20Awadh%20Restaurant%2C%20I%20would%20like%20to%20connect%20for%20table%20reservation%20%2F%20inquiry."
     g_url = config.get("googleReviewUrl", "")
     i_url = config.get("instagramUrl", "")
     i_handle = config.get("instagramHandle", "@awadh_restaurant__")
@@ -1124,8 +1172,12 @@ def sync_html_files(config, config_path="config.js"):
         html = re.sub(r'(<span id="uiTagline">).*?(</span>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiAddressPrimary">).*?(</div>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", html)
-        html = re.sub(r'(<a href="tel:)[^"]*(" class="phone-link" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
-        html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", html)
+        html = re.sub(r'(<a href="tel:)[^"]*(" class="contact-btn call-btn" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
+        html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call: {phone_disp}{m.group(2)}", html)
+        html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="action-card whatsapp-card" id="whatsappCard">)', lambda m: f"{m.group(1)}{wa_url}{m.group(2)}", html)
+        html = re.sub(r'(<div class="whatsapp-number" id="uiWhatsappDisplay">).*?(</div>)', lambda m: f"{m.group(1)}{wa_disp}{m.group(2)}", html)
+        html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp-btn" id="uiWhatsappLink">)', lambda m: f"{m.group(1)}{wa_url}{m.group(2)}", html)
+        html = re.sub(r'(<span id="uiWhatsappText">).*?(</span>)', lambda m: f"{m.group(1)}WhatsApp: {wa_short}{m.group(2)}", html)
         html = re.sub(r'(<div class="insta-handle" id="uiInstaHandle">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle}{m.group(2)}", html)
         if g_url:
             html = re.sub(r'(<a href=")[^"]*(" target="_blank" rel="noopener noreferrer" class="action-card primary-card" id="googleCard">)', lambda m: f"{m.group(1)}{g_url}{m.group(2)}", html)
@@ -1144,7 +1196,7 @@ def sync_html_files(config, config_path="config.js"):
         shtml = re.sub(r'(<div class="standee-location" id="stTagline">).*?(</div>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", shtml)
         shtml = re.sub(r'(<span id="stHighlight">).*?(</span>)', lambda m: f"{m.group(1)}{highlight}{m.group(2)}", shtml)
         shtml = re.sub(r'(<span id="stAddress">).*?(</span>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", shtml)
-        shtml = re.sub(r'(<div class="standee-phone" id="stPhone">).*?(</div>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<div class="standee-phone" id="stPhone">).*?(</div>)', lambda m: f"{m.group(1)}Call: {phone_disp} &nbsp;•&nbsp; WhatsApp: {wa_short}{m.group(2)}", shtml)
         shtml = re.sub(r'(<div class="dual-qr-foot" id="stInstaFoot">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle.upper()}{m.group(2)}", shtml)
         shtml = re.sub(r'config\.js\?v=[a-zA-Z0-9_]+', f'config.js?v={ver}', shtml)
         with open("standee.html", "w", encoding="utf-8") as f:

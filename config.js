@@ -17,9 +17,12 @@ window.RESTAURANT_CONFIG = {
     addressPrimary: "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore",
     city: "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore",
 
-    // Contact Number (Update anytime here)
+    // Contact Numbers (Update anytime here)
     phone: "9035170841",
     phoneDisplay: "90351 70841",
+    whatsapp: "9826598289",
+    whatsappDisplay: "+91 98265 98289",
+    whatsappUrl: "https://wa.me/919826598289?text=Namaste%20Awadh%20Restaurant%2C%20I%20would%20like%20to%20connect%20for%20table%20reservation%20%2F%20inquiry.",
     logoUrl: "logo_with_gold_rim.png?v=1",
 
     // 2. Ambience Photos (Derived from Uploaded Awadh Exterior & Interior Photos)
