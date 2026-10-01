@@ -273,8 +273,11 @@ def prepare_brand_assets():
         wy = (inner_size - target_h) // 2 - 8
         inner_circle.paste(wm_copy, (wx, wy), mask=wm_copy)
 
-    # Dark gold-rimmed 'FINE DINE RESTAURANT' plaque inside medallion below 'अवध'
-    pill_w, pill_h = 316, 40
+    # Dark gold-rimmed 'AWADH RESTAURANT' plaque inside medallion below 'अवध'
+    font_fd = get_font(20, bold=True, serif=True)
+    fd_txt = "Awadh Restaurant"
+    fb = idraw.textbbox((0, 0), fd_txt, font=font_fd)
+    pill_w, pill_h = (fb[2] - fb[0]) + 40, 38
     px1 = (inner_size - pill_w) // 2
     py1 = 340
     idraw.rounded_rectangle(
@@ -284,10 +287,7 @@ def prepare_brand_assets():
         outline=(212, 175, 55, 255),
         width=2
     )
-    font_fd = get_font(19, bold=True, serif=True)
-    fd_txt = "Fine Dine Restaurant"
-    fb = idraw.textbbox((0, 0), fd_txt, font=font_fd)
-    idraw.text(((inner_size - (fb[2] - fb[0])) / 2, py1 + 9), fd_txt, fill=(247, 215, 116, 255), font=font_fd)
+    idraw.text(((inner_size - (fb[2] - fb[0])) / 2, py1 + 8), fd_txt, fill=(247, 215, 116, 255), font=font_fd)
 
     # Apply circular mask
     circle_mask = Image.new("L", (inner_size, inner_size), 0)
@@ -643,33 +643,39 @@ def generate_styled_qr(url, target_size=680):
 
 def draw_brand_header(canvas, draw, w=1200, config=None):
     """
-    Draw the Compact & Balanced Awadh Fine Dine Restaurant Luxury Header.
+    Draw the Compact & Balanced Awadh Restaurant Luxury Header with Saffron Calligraphy & Pure Veg Mark.
     """
     if config is None:
         config = {}
-    logo_path = "logo_with_gold_rim.png" if os.path.exists("logo_with_gold_rim.png") else "logo.png"
-    if os.path.exists(logo_path):
-        logo = Image.open(logo_path).convert("RGBA")
-        logo_size = 152
-        logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
-        canvas.paste(logo, (int((w - logo_size) / 2), 44), mask=logo)
 
     title_path = "awadh_title.png"
     if os.path.exists(title_path):
         title_img = Image.open(title_path).convert("RGBA")
-        target_w = 395
+        target_w = 460
         target_h = int(title_img.size[1] * (target_w / title_img.size[0]))
-        if target_h > 148:
-            target_h = 148
+        if target_h > 215:
+            target_h = 215
             target_w = int(title_img.size[0] * (target_h / title_img.size[1]))
         title_img = title_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-        hx = int((w - target_w) / 2) + 8
-        hy = 198
+
+        veg_size = 36
+        gap = 16
+        total_w = target_w + gap + veg_size
+        hx = int((w - total_w) / 2)
+        hy = 92
         canvas.paste(title_img, (hx, hy), mask=title_img)
 
-    raw_sub = config.get("subname", "AWADH FINE DINE RESTAURANT").strip().upper()
+        # Draw green pure veg mark beside logo
+        vx = hx + target_w + gap
+        vy = hy + (target_h - veg_size) // 2
+        draw.rounded_rectangle([vx, vy, vx + veg_size, vy + veg_size], radius=6, fill=(255, 255, 255), outline=(34, 197, 94), width=3)
+        vr = 8
+        vcx, vcy = vx + veg_size // 2, vy + veg_size // 2
+        draw.ellipse([vcx - vr, vcy - vr, vcx + vr, vcy + vr], fill=(22, 163, 74))
+
+    raw_sub = config.get("subname", "AWADH RESTAURANT").strip().upper()
     midway_text = "   ".join([" ".join(list(word)) for word in raw_sub.split()])
-    font_size_sub = 27
+    font_size_sub = 28
     font_midway = get_font(font_size_sub, bold=True)
     bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
     if (bbox[2] - bbox[0]) > (w - 140):
@@ -682,19 +688,19 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
     if (bbox[2] - bbox[0]) > (w - 140):
         midway_text = raw_sub
         bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
-    draw.text(((w - (bbox[2] - bbox[0])) / 2, 354), midway_text, fill=(247, 223, 148), font=font_midway)
+    draw.text(((w - (bbox[2] - bbox[0])) / 2, 330), midway_text, fill=(247, 223, 148), font=font_midway)
 
     sub_text = config.get("tagline", "100% PURE VEG  •  ROYAL FAMILY DINING  •  RAU, INDORE")
-    font_size_tag = 18
+    font_size_tag = 19
     font_sub = get_font(font_size_tag, bold=True)
     bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
     while (bbox[2] - bbox[0]) > (w - 140) and font_size_tag > 13:
         font_size_tag -= 1
         font_sub = get_font(font_size_tag, bold=True)
         bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
-    draw.text(((w - (bbox[2] - bbox[0])) / 2, 396), sub_text, fill=(255, 255, 255), font=font_sub)
+    draw.text(((w - (bbox[2] - bbox[0])) / 2, 380), sub_text, fill=(255, 255, 255), font=font_sub)
 
-    div_y = 438
+    div_y = 430
     draw.line([200, div_y, w - 200, div_y], fill=(212, 175, 55), width=2)
     draw.polygon([(w // 2, div_y - 7), (w // 2 + 7, div_y), (w // 2, div_y + 7), (w // 2 - 7, div_y)], fill=(247, 223, 148))
 
@@ -706,8 +712,12 @@ def draw_footer(canvas, draw, config, w=1200, is_landing=False):
     font_phone = get_font(33, bold=True)
     font_thanks = get_font(28, bold=False, italic=True, serif=True)
 
-    info_x1, info_y1 = 82, 1450
-    info_x2, info_y2 = w - 82, 1662
+    if is_landing:
+        info_x1, info_y1 = 82, 1420
+        info_x2, info_y2 = w - 82, 1664
+    else:
+        info_x1, info_y1 = 82, 1450
+        info_x2, info_y2 = w - 82, 1662
 
     glass = Image.new("RGBA", (w, 1800), (0, 0, 0, 0))
     gdraw = ImageDraw.Draw(glass)
@@ -724,11 +734,20 @@ def draw_footer(canvas, draw, config, w=1200, is_landing=False):
         outline=(247, 223, 148, 90),
         width=1
     )
-    div_y = info_y1 + 60
-    gdraw.line([info_x1 + 90, div_y, info_x2 - 90, div_y], fill=(212, 175, 55, 115), width=1)
+
+    if is_landing:
+        gdraw.line([info_x1 + 90, info_y1 + 54, info_x2 - 90, info_y1 + 54], fill=(212, 175, 55, 115), width=1)
+        gdraw.line([info_x1 + 90, info_y1 + 106, info_x2 - 90, info_y1 + 106], fill=(212, 175, 55, 115), width=1)
+        btn_y1 = info_y1 + 172
+        btn_y2 = info_y2 - 14
+    else:
+        div_y = info_y1 + 60
+        gdraw.line([info_x1 + 90, div_y, info_x2 - 90, div_y], fill=(212, 175, 55, 115), width=1)
+        btn_y1 = info_y1 + 124
+        btn_y2 = info_y2 - 16
 
     gdraw.rounded_rectangle(
-        [info_x1 + 135, info_y1 + 124, info_x2 - 135, info_y2 - 16],
+        [info_x1 + 135, btn_y1, info_x2 - 135, btn_y2],
         radius=14,
         fill=(212, 175, 55, 42),
         outline=(249, 226, 156, 175),
@@ -741,7 +760,7 @@ def draw_footer(canvas, draw, config, w=1200, is_landing=False):
     lbl1 = "100% PURE VEGETARIAN :  "
     txt1 = config.get("highlight", "Royal Awadhi & North Indian Delicacies • Grand Ambience")
     txt1 = re.sub(r"^\s*100%\s*pure\s*veg(etarian)?\s*[\:\•\-\–\—\.]*\s*", "", txt1, flags=re.IGNORECASE)
-    f_size1 = 21
+    f_size1 = 20 if is_landing else 21
     font_label1 = get_font(f_size1, bold=True)
     font_addr1 = get_font(f_size1, bold=True)
     b_lbl1 = draw.textbbox((0, 0), lbl1, font=font_label1)
@@ -756,14 +775,37 @@ def draw_footer(canvas, draw, config, w=1200, is_landing=False):
     w1_txt = b_txt1[2] - b_txt1[0]
     total_w1 = w1_lbl + w1_txt
     x1_start = (w - total_w1) / 2
-    y1_row = info_y1 + 19 + (21 - f_size1) // 2
+    y1_row = (info_y1 + 16) if is_landing else (info_y1 + 19 + (21 - f_size1) // 2)
     draw_sparkle(draw, x1_start - 20, y1_row + 10, radius=7, color=(249, 226, 156))
     draw.text((x1_start, y1_row), lbl1, fill=(249, 226, 156), font=font_label1)
     draw.text((x1_start + w1_lbl, y1_row), txt1, fill=(255, 255, 255), font=font_addr1)
 
+    if is_landing:
+        lbl_g = "BEAUTIFUL GARDEN & POOL :  "
+        txt_g = config.get("gardenHighlight", "Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining")
+        f_sizeg = 20
+        font_labelg = get_font(f_sizeg, bold=True)
+        font_addrg = get_font(f_sizeg, bold=True)
+        b_lblg = draw.textbbox((0, 0), lbl_g, font=font_labelg)
+        b_txtg = draw.textbbox((0, 0), txt_g, font=font_addrg)
+        while ((b_lblg[2] - b_lblg[0]) + (b_txtg[2] - b_txtg[0])) > (w - 230) and f_sizeg > 14:
+            f_sizeg -= 1
+            font_labelg = get_font(f_sizeg, bold=True)
+            font_addrg = get_font(f_sizeg, bold=True)
+            b_lblg = draw.textbbox((0, 0), lbl_g, font=font_labelg)
+            b_txtg = draw.textbbox((0, 0), txt_g, font=font_addrg)
+        wg_lbl = b_lblg[2] - b_lblg[0]
+        wg_txt = b_txtg[2] - b_txtg[0]
+        total_wg = wg_lbl + wg_txt
+        xg_start = (w - total_wg) / 2
+        yg_row = info_y1 + 68
+        draw_sparkle(draw, xg_start - 20, yg_row + 10, radius=7, color=(249, 226, 156))
+        draw.text((xg_start, yg_row), lbl_g, fill=(249, 226, 156), font=font_labelg)
+        draw.text((xg_start + wg_lbl, yg_row), txt_g, fill=(255, 255, 255), font=font_addrg)
+
     lbl2 = f"{config.get('addressPrimaryLabel', 'LOCATION')} :  "
     txt2 = config.get("addressPrimary", "NH 3, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
-    f_size2 = 21
+    f_size2 = 20 if is_landing else 21
     font_label2 = get_font(f_size2, bold=True)
     font_addr2 = get_font(f_size2, bold=True)
     b_lbl2 = draw.textbbox((0, 0), lbl2, font=font_label2)
@@ -778,21 +820,16 @@ def draw_footer(canvas, draw, config, w=1200, is_landing=False):
     w2_txt = b_txt2[2] - b_txt2[0]
     total_w2 = w2_lbl + w2_txt
     x2_start = (w - total_w2) / 2
-    y2_row = info_y1 + 75 + (21 - f_size2) // 2
+    y2_row = (info_y1 + 120) if is_landing else (info_y1 + 75 + (21 - f_size2) // 2)
     draw_sparkle(draw, x2_start - 20, y2_row + 10, radius=7, color=(249, 226, 156))
     draw.text((x2_start, y2_row), lbl2, fill=(249, 226, 156), font=font_label2)
     draw.text((x2_start + w2_lbl, y2_row), txt2, fill=(250, 247, 240), font=font_addr2)
 
-    phone_disp = config.get("phoneDisplay") or config.get("phone", "90351 70841")
+    phone_disp = config.get("phoneDisplay") or config.get("phone", "98265 98289")
     if is_landing:
         phone_text = f"Call / Reservation: {phone_disp}"
     else:
-        wa_disp = config.get("whatsappDisplay") or config.get("whatsapp", "98265 98289")
-        wa_short = re.sub(r"^\+91\s*", "", wa_disp)
-        if wa_short and wa_short != phone_disp:
-            phone_text = f"Call: {phone_disp}   •   WhatsApp: {wa_short}"
-        else:
-            phone_text = f"Call / Reservation: {phone_disp}"
+        phone_text = f"Call & WhatsApp: {phone_disp}"
     f_size_p = 27
     font_phone = get_font(f_size_p, bold=True)
     bbox = draw.textbbox((0, 0), phone_text, font=font_phone)
@@ -800,7 +837,8 @@ def draw_footer(canvas, draw, config, w=1200, is_landing=False):
         f_size_p -= 1
         font_phone = get_font(f_size_p, bold=True)
         bbox = draw.textbbox((0, 0), phone_text, font=font_phone)
-    draw.text(((w - (bbox[2] - bbox[0])) / 2, info_y1 + 138), phone_text, fill=(250, 228, 152), font=font_phone)
+    btn_text_y = (btn_y1 + 14) if is_landing else (info_y1 + 138)
+    draw.text(((w - (bbox[2] - bbox[0])) / 2, btn_text_y), phone_text, fill=(250, 228, 152), font=font_phone)
 
     thanks_text = "Thank you for dining with us!"
     bbox = draw.textbbox((0, 0), thanks_text, font=font_thanks)
@@ -957,7 +995,7 @@ def build_dual_direct_standee(config, bg_img, output_filename="standee_dual_dire
     canvas.paste(Image.alpha_composite(canvas.convert("RGBA"), glass).convert("RGB"))
     draw = ImageDraw.Draw(canvas)
 
-    ft_head = "100% PURE VEG  •  AWADH FINE DINE  •  ROYAL AMBIENCE"
+    ft_head = "100% PURE VEG  •  AWADH RESTAURANT  •  ROYAL AMBIENCE"
     bbox = draw.textbbox((0, 0), ft_head, font=font_feature_title)
     ft_w = bbox[2] - bbox[0]
     ft_x = (w - ft_w) / 2
@@ -1150,13 +1188,14 @@ def sync_html_files(config, config_path="config.js"):
         with open(config_path, "rb") as f:
             ver = hashlib.md5(f.read()).hexdigest()[:8]
 
-    name = config.get("name", "Awadh Fine Dine Restaurant")
-    subname = config.get("subname", "AWADH FINE DINE RESTAURANT")
+    name = config.get("name", "Awadh Restaurant")
+    subname = config.get("subname", "AWADH RESTAURANT")
     tagline = config.get("tagline", "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE")
     highlight = config.get("highlight", "Royal Awadhi & North Indian Delicacies • Grand Ambience")
     clean_highlight = re.sub(r"^\s*100%\s*pure\s*veg(etarian)?\s*[\:\•\-\–\—\.]*\s*", "", highlight, flags=re.IGNORECASE)
+    garden_hl = config.get("gardenHighlight", "Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining")
     addr = config.get("addressPrimary", "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore")
-    phone = config.get("phone", "9035170841")
+    phone = config.get("phone", "9826598289")
     clean_phone = re.sub(r"\s+", "", phone)
     phone_disp = config.get("phoneDisplay") or phone
     whatsapp = config.get("whatsapp", "9826598289")
@@ -1176,6 +1215,7 @@ def sync_html_files(config, config_path="config.js"):
         html = re.sub(r'(<div class="brand-subname" id="uiSubname">).*?(</div>)', lambda m: f"{m.group(1)}{subname}{m.group(2)}", html)
         html = re.sub(r'(<span id="uiTagline">).*?(</span>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{clean_highlight}{m.group(2)}", html)
+        html = re.sub(r'(<div class="address-line" id="uiGardenHighlight">).*?(</div>)', lambda m: f"{m.group(1)}{garden_hl}{m.group(2)}", html)
         html = re.sub(r'(<div class="address-line" id="uiAddressPrimary">).*?(</div>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", html)
         html = re.sub(r'(<a href="tel:)[^"]*(" class="phone-link" id="uiPhoneLink">)', lambda m: f"{m.group(1)}{clean_phone}{m.group(2)}", html)
         html = re.sub(r'(<span id="uiPhoneText">).*?(</span>)', lambda m: f"{m.group(1)}Call / Reservation: {phone_disp}{m.group(2)}", html)
@@ -1199,7 +1239,7 @@ def sync_html_files(config, config_path="config.js"):
         shtml = re.sub(r'(<div class="standee-location" id="stTagline">).*?(</div>)', lambda m: f"{m.group(1)}{tagline}{m.group(2)}", shtml)
         shtml = re.sub(r'(<span id="stHighlight">).*?(</span>)', lambda m: f"{m.group(1)}{clean_highlight}{m.group(2)}", shtml)
         shtml = re.sub(r'(<span id="stAddress">).*?(</span>)', lambda m: f"{m.group(1)}{addr}{m.group(2)}", shtml)
-        shtml = re.sub(r'(<div class="standee-phone" id="stPhone">).*?(</div>)', lambda m: f"{m.group(1)}Call: {phone_disp} &nbsp;•&nbsp; WhatsApp: {wa_short}{m.group(2)}", shtml)
+        shtml = re.sub(r'(<div class="standee-phone" id="stPhone">).*?(</div>)', lambda m: f"{m.group(1)}Call & WhatsApp: {phone_disp}{m.group(2)}", shtml)
         shtml = re.sub(r'(<div class="dual-qr-foot" id="stInstaFoot">).*?(</div>)', lambda m: f"{m.group(1)}{i_handle.upper()}{m.group(2)}", shtml)
         shtml = re.sub(r'config\.js\?v=[a-zA-Z0-9_]+', f'config.js?v={ver}', shtml)
         with open("standee.html", "w", encoding="utf-8") as f:

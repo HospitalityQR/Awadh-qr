@@ -6,10 +6,10 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title id="pageTitle">Awadh Fine Dine Restaurant | Rate Us on Google & Follow Us on Instagram</title>
+    <title id="pageTitle">Awadh Restaurant | Rate Us on Google & Follow Us on Instagram</title>
     
     <!-- Meta Tags for SEO & WhatsApp/Social Sharing -->
-    <meta name="description" id="metaDesc" content="Welcome to Awadh Fine Dine Restaurant (अवध) — 100% Pure Veg Royal Family Dining, NH 3, Agra-Mumbai Highway, Pigdamber, Rau, Indore. Rate Us on Google & Follow Us on Instagram (@awadh_restaurant__).">
+    <meta name="description" id="metaDesc" content="Welcome to Awadh Restaurant (अवध) — 100% Pure Veg Royal Family Dining, NH 3, Agra-Mumbai Highway, Pigdamber, Rau, Indore. Rate Us on Google & Follow Us on Instagram (@awadh_restaurant__).">
     <meta name="theme-color" content="#080C16">
     
     <!-- Google Fonts: Luxury Serif, Hindi & Modern Sans -->
@@ -125,55 +125,44 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 1. Brand Header (Compact & Balanced for Center Breathing Room) */
-        .logo-wrapper {
+        /* 1. Official Awadh Brand Header (Calligraphy Logo + Pure Veg Badge) */
+        .brand-logo-container {
             position: relative;
-            margin: 0 auto 0;
-            display: inline-block;
-            z-index: 3;
-        }
-
-        .logo-glow {
-            position: absolute;
-            inset: -12px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(240, 101, 19, 0.52) 0%, rgba(249, 226, 156, 0.32) 50%, transparent 78%);
-            animation: pulseGlow 3.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(0.95); opacity: 0.72; }
-            100% { transform: scale(1.08); opacity: 1; }
-        }
-
-        .official-logo {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            position: relative;
-            z-index: 2;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.65));
-        }
-
-        /* Official 'अवध' Saffron Calligraphy & Divine Bow-and-Arrow Wordmark */
-        .hindi-title-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
+            display: inline-flex;
             align-items: center;
-            margin-top: -4px;
-            margin-bottom: 2px;
-            position: relative;
-            z-index: 2;
+            justify-content: center;
+            margin: 6px auto 4px;
+            z-index: 3;
+            gap: 12px;
         }
 
         .hindi-title-img {
-            width: 214px;
-            max-width: 78%;
+            width: 236px;
+            max-width: 80%;
             height: auto;
             display: block;
-            filter: drop-shadow(0 5px 14px rgba(0, 0, 0, 0.82));
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85));
+        }
+
+        .pure-veg-mark {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #22c55e;
+            border-radius: 4px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .pure-veg-mark::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #16a34a;
         }
 
         .brand-subname {
@@ -674,18 +663,13 @@
         <div class="corner-ornament corner-bl"></div>
         <div class="corner-ornament corner-br"></div>
 
-        <!-- 1. Official Circular Awadh Medallion with 24k Gold Rim -->
-        <div class="logo-wrapper">
-            <div class="logo-glow"></div>
-            <img src="logo_with_gold_rim.png?v=1" alt="Awadh Fine Dine Restaurant Logo" class="official-logo" id="uiLogo">
+        <!-- 1. Official 'अवध' Calligraphy & Pure Veg Badge -->
+        <div class="brand-logo-container">
+            <img src="awadh_title.png?v=1" alt="अवध — Awadh Restaurant" class="hindi-title-img" id="uiHindiTitle">
+            <div class="pure-veg-mark" title="100% Pure Vegetarian"></div>
         </div>
 
-        <!-- 2. Official 'अवध' Calligraphy & Divine Bow-and-Arrow Wordmark -->
-        <div class="hindi-title-wrapper">
-            <img src="awadh_title.png?v=1" alt="अवध — Fine Dine Restaurant" class="hindi-title-img" id="uiHindiTitle">
-        </div>
-
-        <div class="brand-subname" id="uiSubname">AWADH FINE DINE RESTAURANT</div>
+        <div class="brand-subname" id="uiSubname">AWADH RESTAURANT</div>
         <div class="brand-location">
             <span class="pure-veg-dot" title="100% Pure Vegetarian"></span>
             <span id="uiTagline">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</span>
@@ -783,17 +767,21 @@
         <div class="info-box">
             <div class="outlets-list">
                 <div class="outlet-item">
-                    <span class="outlet-badge">✦ 100% PURE VEG • FINE DINE RESTAURANT ✦</span>
+                    <span class="outlet-badge">✦ 100% PURE VEG • RESTAURANT ✦</span>
                     <div class="address-line" id="uiHighlight">Royal Awadhi & North Indian Delicacies • Grand Ambience</div>
+                </div>
+                <div class="outlet-item">
+                    <span class="outlet-badge">✦ BEAUTIFUL GARDEN & SWIMMING POOL ✦</span>
+                    <div class="address-line" id="uiGardenHighlight">Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining</div>
                 </div>
                 <div class="outlet-item">
                     <span class="outlet-badge">✦ RAU, AB ROAD • INDORE ✦</span>
                     <div class="address-line" id="uiAddressPrimary">NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</div>
                 </div>
             </div>
-            <a href="tel:9035170841" class="phone-link" id="uiPhoneLink">
+            <a href="tel:9826598289" class="phone-link" id="uiPhoneLink">
                 <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <span id="uiPhoneText">Call / Reservation: 90351 70841</span>
+                <span id="uiPhoneText">Call / Reservation: 98265 98289</span>
             </a>
         </div>
 
@@ -813,7 +801,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=7151d273"></script>
+    <script src="config.js?v=291c50ce"></script>
     <script>
         function openLightbox(src) {
             const modal = document.getElementById('lightboxModal');
@@ -846,6 +834,10 @@
                 const hlEl = document.getElementById('uiHighlight');
                 const cleanHl = cfg.highlight.replace(/^\s*100%\s*pure\s*veg(etarian)?\s*[\:\•\-\–\—\.]*\s*/i, '');
                 if (hlEl) hlEl.textContent = cleanHl;
+            }
+            if (cfg.gardenHighlight) {
+                const gEl = document.getElementById('uiGardenHighlight');
+                if (gEl) gEl.textContent = cfg.gardenHighlight;
             }
             if (cfg.addressPrimary) {
                 const addr1 = document.getElementById('uiAddressPrimary');

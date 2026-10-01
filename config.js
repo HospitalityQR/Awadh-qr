@@ -5,25 +5,26 @@
  */
 
 window.RESTAURANT_CONFIG = {
-    // 1. Brand Identity (Awadh Fine Dine Restaurant • 100% Pure Veg)
-    name: "Awadh Fine Dine Restaurant",
-    subname: "AWADH FINE DINE RESTAURANT",
+    // 1. Brand Identity (Awadh Restaurant • 100% Pure Veg)
+    name: "Awadh Restaurant",
+    subname: "AWADH RESTAURANT",
     hindiTitleUrl: "awadh_title.png?v=1",
     tagline: "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE",
     highlight: "Royal Awadhi & North Indian Delicacies • Grand Ambience",
+    gardenHighlight: "Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining",
 
     // Primary Address & Location Details
     addressPrimaryLabel: "LOCATION",
     addressPrimary: "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore",
     city: "NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore",
 
-    // Contact Numbers (Update anytime here)
-    phone: "9035170841",
-    phoneDisplay: "90351 70841",
+    // Contact Numbers (Unified to 9826598289)
+    phone: "9826598289",
+    phoneDisplay: "98265 98289",
     whatsapp: "9826598289",
     whatsappDisplay: "+91 98265 98289",
     whatsappUrl: "https://wa.me/919826598289?text=Namaste%20Awadh%20Restaurant%2C%20I%20would%20like%20to%20connect%20for%20table%20reservation%20%2F%20inquiry.",
-    logoUrl: "logo_with_gold_rim.png?v=1",
+    logoUrl: "awadh_title.png?v=1",
 
     // 2. Ambience Photos (Derived from Uploaded Awadh Exterior & Interior Photos)
     ambiencePhotos: [

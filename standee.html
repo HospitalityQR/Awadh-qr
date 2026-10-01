@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awadh Fine Dine Restaurant (अवध) — Printable QR Standee Studio</title>
+    <title>Awadh Restaurant (अवध) — Printable QR Standee Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -141,21 +141,40 @@
             z-index: 3;
         }
 
-        .standee-logo {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            object-fit: contain;
-            margin-bottom: 0;
-            filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.6));
+        .standee-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 4px;
+            margin-bottom: 3px;
         }
 
         .standee-hindi-title {
-            width: 178px;
+            width: 210px;
             height: auto;
-            margin-top: -4px;
-            margin-bottom: 2px;
             filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
+        }
+
+        .pure-veg-mark-standee {
+            width: 18px;
+            height: 18px;
+            border: 1.8px solid #22c55e;
+            border-radius: 3px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+        }
+
+        .pure-veg-mark-standee::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #16a34a;
         }
 
         .standee-subname {
@@ -387,7 +406,7 @@
 <body>
 
     <div class="toolbar">
-        <div class="toolbar-title">AWADH FINE DINE RESTAURANT (अवध) • 300 DPI STANDEE STUDIO</div>
+        <div class="toolbar-title">AWADH RESTAURANT (अवध) • 300 DPI STANDEE STUDIO</div>
         <div class="toolbar-controls">
             <button class="mode-btn active" onclick="setStandeeMode('hub', this)">1. Smart Hub Standee</button>
             <button class="mode-btn" onclick="setStandeeMode('dual', this)">2. Dual Direct QR</button>
@@ -403,9 +422,11 @@
 
         <!-- Header -->
         <div class="standee-header">
-            <img src="logo_with_gold_rim.png?v=1" alt="Awadh Logo" class="standee-logo" id="stLogo">
-            <img src="awadh_title.png?v=1" alt="Awadh Fine Dine Restaurant" class="standee-hindi-title" id="stHindiTitle">
-            <div class="standee-subname" id="stSubname">AWADH FINE DINE RESTAURANT</div>
+            <div class="standee-logo-container">
+                <img src="awadh_title.png?v=1" alt="Awadh Restaurant" class="standee-hindi-title" id="stHindiTitle">
+                <div class="pure-veg-mark-standee" title="100% Pure Vegetarian"></div>
+            </div>
+            <div class="standee-subname" id="stSubname">AWADH RESTAURANT</div>
             <div class="standee-location" id="stTagline">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</div>
             <div class="standee-divider"><div class="standee-diamond"></div></div>
         </div>
@@ -459,7 +480,7 @@
                 <div class="standee-addr"><strong>✦ 100% PURE VEG:</strong> <span id="stHighlight">Royal Awadhi & North Indian Delicacies • Grand Ambience</span></div>
                 <div class="standee-addr-divider"></div>
                 <div class="standee-addr"><strong>✦ LOCATION:</strong> <span id="stAddress">NH 3, Agra-Mumbai Highway, Near Maharana Pratap Bridge, Pigdamber, Rau, Indore</span></div>
-                <div class="standee-phone" id="stPhone">Call: 90351 70841 &nbsp;•&nbsp; WhatsApp: 98265 98289</div>
+                <div class="standee-phone" id="stPhone">Call & WhatsApp: 98265 98289</div>
             </div>
             <div class="standee-thanks">
                 <span>✦</span>
@@ -469,7 +490,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=7151d273"></script>
+    <script src="config.js?v=291c50ce"></script>
     <script>
         function applyStandeeConfig(cfg) {
             if (!cfg) return;
@@ -481,9 +502,8 @@
             }
             if (cfg.addressPrimary) document.getElementById('stAddress').textContent = cfg.addressPrimary;
             if (cfg.phone || cfg.whatsapp) {
-                const phoneStr = cfg.phoneDisplay || cfg.phone || "90351 70841";
-                const waStr = cfg.whatsappDisplay || cfg.whatsapp || "98265 98289";
-                document.getElementById('stPhone').innerHTML = 'Call: ' + phoneStr + ' &nbsp;•&nbsp; WhatsApp: ' + waStr;
+                const phoneStr = cfg.phoneDisplay || cfg.phone || "98265 98289";
+                document.getElementById('stPhone').textContent = 'Call & WhatsApp: ' + phoneStr;
             }
             if (cfg.instagramHandle) {
                 document.getElementById('stInstaFoot').textContent = cfg.instagramHandle.toUpperCase();
