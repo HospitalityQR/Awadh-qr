@@ -125,56 +125,52 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 1. Official Awadh Brand Header & Left-Side Pure Veg Badge */
+        /* 1. Official Awadh Brand Header & Upper-Left Pure Veg Lockup */
         .pure-veg-top-badge {
             position: absolute;
             top: 24px;
-            left: 18px;
+            left: 20px;
             z-index: 10;
             display: inline-flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
-            gap: 3.5px;
-            background: rgba(10, 15, 26, 0.88);
-            border: 1px solid rgba(34, 197, 94, 0.55);
-            padding: 5px 8px 4px;
-            border-radius: 8px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75), 0 0 8px rgba(34, 197, 94, 0.2);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            gap: 6px;
+            background: transparent;
+            border: none;
+            padding: 0;
             user-select: none;
         }
 
         .pure-veg-mark-box {
-            width: 16px;
-            height: 16px;
-            border: 1.8px solid #22c55e;
-            border-radius: 3px;
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #22c55e;
+            border-radius: 2.5px;
             background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
         }
 
         .pure-veg-mark-circle {
-            width: 7.5px;
-            height: 7.5px;
+            width: 6.5px;
+            height: 6.5px;
             border-radius: 50%;
             background: #16a34a;
             display: block;
         }
 
         .pure-veg-top-text {
-            font-size: 8.5px;
+            font-size: 8px;
             font-weight: 800;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             color: #4ade80;
             text-transform: uppercase;
             line-height: 1;
             white-space: nowrap;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
         }
 
         .brand-logo-container {
@@ -694,12 +690,12 @@
         <div class="corner-ornament corner-bl"></div>
         <div class="corner-ornament corner-br"></div>
 
-        <!-- Official Pure Veg Badge on Upper-Right Side ("right m upar side") -->
+        <!-- Official 100% Pure Vegetarian Lockup in Upper-Left Area -->
         <div class="pure-veg-top-badge" title="100% Pure Vegetarian Restaurant">
             <span class="pure-veg-mark-box">
                 <span class="pure-veg-mark-circle"></span>
             </span>
-            <span class="pure-veg-top-text">PURE VEG</span>
+            <span class="pure-veg-top-text">100% PURE VEGETARIAN</span>
         </div>
 
         <!-- 1. Official 'अवध Fine Dine Restaurant' Brand Logo -->
@@ -709,8 +705,7 @@
 
         <div class="brand-subname" id="uiSubname">AWADH RESTAURANT</div>
         <div class="brand-location">
-            <span class="pure-veg-dot" title="100% Pure Vegetarian"></span>
-            <span id="uiTagline">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</span>
+            <span id="uiTagline">ROYAL FAMILY DINING • RAU, INDORE</span>
         </div>
 
         <div class="gold-divider">
@@ -720,7 +715,7 @@
         <!-- 3. Primary Action Cards -->
         <main class="links-wrapper">
             <!-- Card 1: Rate Us on Google -->
-            <a href="https://share.google/nW6e8GsQL5WBQJF04" target="_blank" rel="noopener noreferrer" class="action-card primary-card" id="googleCard">
+            <a href="https://share.google/23XtQFxTAfimcK1W6" target="_blank" rel="noopener noreferrer" class="action-card primary-card" id="googleCard">
                 <div class="card-left">
                     <div class="icon-box google-icon-box">
                         <svg viewBox="0 0 24 24">
@@ -839,7 +834,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=bca44c53"></script>
+    <script src="config.js?v=f959387d"></script>
     <script>
         function openLightbox(src) {
             const modal = document.getElementById('lightboxModal');

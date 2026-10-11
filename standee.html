@@ -143,52 +143,49 @@
 
         .standee-pure-veg-badge {
             position: absolute;
-            top: 24px;
-            left: 20px;
+            top: 33px;
+            left: 33px;
             z-index: 10;
             display: inline-flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
-            gap: 3.5px;
-            background: rgba(10, 15, 26, 0.88);
-            border: 1px solid rgba(34, 197, 94, 0.55);
-            padding: 5px 8px 4px;
-            border-radius: 8px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75), 0 0 8px rgba(34, 197, 94, 0.22);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            gap: 5px;
+            background: transparent;
+            border: none;
+            padding: 0;
             user-select: none;
         }
 
         .pure-veg-mark-box {
-            width: 16px;
-            height: 16px;
-            border: 1.8px solid #22c55e;
-            border-radius: 3px;
+            width: 11px;
+            height: 11px;
+            border: 1.2px solid #22c55e;
+            border-radius: 2px;
             background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
         }
 
         .pure-veg-mark-circle {
-            width: 7.5px;
-            height: 7.5px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             background: #16a34a;
             display: block;
         }
 
         .pure-veg-top-text {
-            font-size: 8.5px;
+            font-size: 7.5px;
             font-weight: 800;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             color: #4ade80;
             text-transform: uppercase;
             line-height: 1;
+            white-space: nowrap;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
         }
 
         .standee-logo-container {
@@ -452,18 +449,18 @@
 
         <!-- Header -->
         <div class="standee-header">
-            <!-- Official Pure Veg Badge on Upper-Right Side ("right m upar side") -->
+            <!-- Official 100% Pure Vegetarian Lockup in Upper-Left Area -->
             <div class="standee-pure-veg-badge" title="100% Pure Vegetarian">
                 <span class="pure-veg-mark-box">
                     <span class="pure-veg-mark-circle"></span>
                 </span>
-                <span class="pure-veg-top-text">PURE VEG</span>
+                <span class="pure-veg-top-text">100% PURE VEGETARIAN</span>
             </div>
             <div class="standee-logo-container">
                 <img src="awadh_title.png?v=2" alt="Awadh Restaurant" class="standee-hindi-title" id="stHindiTitle">
             </div>
             <div class="standee-subname" id="stSubname">AWADH RESTAURANT</div>
-            <div class="standee-location" id="stTagline">100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE</div>
+            <div class="standee-location" id="stTagline">ROYAL FAMILY DINING • RAU, INDORE</div>
             <div class="standee-divider"><div class="standee-diamond"></div></div>
         </div>
 
@@ -526,7 +523,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=bca44c53"></script>
+    <script src="config.js?v=f959387d"></script>
     <script>
         function applyStandeeConfig(cfg) {
             if (!cfg) return;

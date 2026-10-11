@@ -642,28 +642,25 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
     if config is None:
         config = {}
 
-    # 1. Pure Veg Badge on Left Side, slightly lower with text underneath ("left mai thoda neeche side aur sign ke neeche pure veg")
-    badge_w = 84
-    badge_h = 60
-    bx = 84
-    by = 68
-    draw.rounded_rectangle([bx, by, bx + badge_w, by + badge_h], radius=10, fill=(10, 16, 26, 230), outline=(34, 197, 94, 220), width=2)
-
-    # Official Green Vegetarian Sign (FSSAI box + circle on top)
+    # 1. Official Pure Veg Lockup in Upper-Left Area ("100% PURE VEGETARIAN")
+    # Positioned ~2-3 cm below top inner border and 2-3 cm from left inner border (at x=84, y=84)
+    # Naturally printed into the luxury design with official FSSAI green veg symbol
+    vx = 84
+    vy = 84
     box_size = 22
-    box_x = bx + (badge_w - box_size) // 2
-    box_y = by + 7
-    draw.rounded_rectangle([box_x, box_y, box_x + box_size, box_y + box_size], radius=4, fill=(255, 255, 255), outline=(34, 197, 94), width=2)
-    dot_r = 5.5
-    draw.ellipse([box_x + box_size/2 - dot_r, box_y + box_size/2 - dot_r, box_x + box_size/2 + dot_r, box_y + box_size/2 + dot_r], fill=(22, 163, 74))
 
-    # "PURE VEG" text rendered directly under the sign
-    font_veg = get_font(12, bold=True)
-    bbox = draw.textbbox((0, 0), "PURE VEG", font=font_veg)
-    tw = bbox[2] - bbox[0]
-    tx = bx + (badge_w - tw) // 2
-    ty = box_y + box_size + 5
-    draw.text((tx, ty), "PURE VEG", fill=(74, 222, 128), font=font_veg)
+    # Official Green Vegetarian Sign (FSSAI white square box + green outline + green dot)
+    draw.rounded_rectangle([vx - 1, vy - 1, vx + box_size + 1, vy + box_size + 1], radius=4, fill=(0, 0, 0, 160))
+    draw.rounded_rectangle([vx, vy, vx + box_size, vy + box_size], radius=4, fill=(255, 255, 255), outline=(34, 197, 94), width=2)
+    dot_r = 5.5
+    draw.ellipse([vx + box_size/2 - dot_r, vy + box_size/2 - dot_r, vx + box_size/2 + dot_r, vy + box_size/2 + dot_r], fill=(22, 163, 74))
+
+    # "100% PURE VEGETARIAN" text horizontally aligned next to the sign, naturally printed
+    font_veg = get_font(15, bold=True)
+    tx = vx + box_size + 9
+    ty = vy + (box_size - 15) // 2
+    draw.text((tx + 1, ty + 1), "100% PURE VEGETARIAN", fill=(0, 0, 0), font=font_veg)
+    draw.text((tx, ty), "100% PURE VEGETARIAN", fill=(74, 222, 128), font=font_veg)
 
     # 2. Main Logo (Transparent 'अवध' + Bow & Arrow + 'Fine Dine Restaurant')
     title_path = "awadh_title.png"
@@ -697,7 +694,7 @@ def draw_brand_header(canvas, draw, w=1200, config=None):
         bbox = draw.textbbox((0, 0), midway_text, font=font_midway)
     draw.text(((w - (bbox[2] - bbox[0])) / 2, 328), midway_text, fill=(247, 223, 148), font=font_midway)
 
-    sub_text = config.get("tagline", "100% PURE VEG  •  ROYAL FAMILY DINING  •  RAU, INDORE")
+    sub_text = config.get("tagline", "ROYAL FAMILY DINING  •  RAU, INDORE")
     font_size_tag = 18
     font_sub = get_font(font_size_tag, bold=True)
     bbox = draw.textbbox((0, 0), sub_text, font=font_sub)
@@ -1197,7 +1194,7 @@ def sync_html_files(config, config_path="config.js"):
 
     name = config.get("name", "Awadh Restaurant")
     subname = config.get("subname", "AWADH RESTAURANT")
-    tagline = config.get("tagline", "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE")
+    tagline = config.get("tagline", "ROYAL FAMILY DINING • RAU, INDORE")
     highlight = config.get("highlight", "Royal Awadhi & North Indian Delicacies • Grand Ambience")
     clean_highlight = re.sub(r"^\s*100%\s*pure\s*veg(etarian)?\s*[\:\•\-\–\—\.]*\s*", "", highlight, flags=re.IGNORECASE)
     garden_hl = config.get("gardenHighlight", "Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining")

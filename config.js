@@ -9,7 +9,7 @@ window.RESTAURANT_CONFIG = {
     name: "Awadh Restaurant",
     subname: "AWADH RESTAURANT",
     hindiTitleUrl: "awadh_title.png?v=2",
-    tagline: "100% PURE VEG • ROYAL FAMILY DINING • RAU, INDORE",
+    tagline: "ROYAL FAMILY DINING • RAU, INDORE",
     highlight: "Royal Awadhi & North Indian Delicacies • Grand Ambience",
     gardenHighlight: "Scenic Garden Seating • Luxury Swimming Pool Ambience • Open-Air Dining",
 
@@ -34,7 +34,7 @@ window.RESTAURANT_CONFIG = {
     ],
 
     // 3. Action Destination Links (Provided by User)
-    googleReviewUrl: "https://share.google/nW6e8GsQL5WBQJF04",
+    googleReviewUrl: "https://share.google/23XtQFxTAfimcK1W6",
     instagramUrl: "https://www.instagram.com/awadh_restaurant__?stkn=ODdiYTBwdDdna3Q1",
     instagramHandle: "@awadh_restaurant__",
 
